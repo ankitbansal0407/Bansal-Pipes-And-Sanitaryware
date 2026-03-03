@@ -1,0 +1,266 @@
+[
+  {
+    "id": 1,
+    "name": "Finolex CPVC Pipe",
+    "category": "pipes",
+    "emoji": "pipe",
+    "bg": "#1a3a5c",
+    "price": "Rs.120/mtr",
+    "priceNum": 120,
+    "badge": "Bestseller",
+    "desc": "ISI marked, hot and cold water application, 10 bar pressure rating.",
+    "image": "",
+    "specs": {
+      "Brand": "Finolex",
+      "Material": "CPVC",
+      "Size": "1/2 to 2 inch",
+      "Standard": "IS 15778"
+    }
+  },
+  {
+    "id": 2,
+    "name": "Astral uPVC Pipe",
+    "category": "pipes",
+    "emoji": "pipe2",
+    "bg": "#3a2010",
+    "price": "Rs.85/mtr",
+    "priceNum": 85,
+    "badge": null,
+    "desc": "UV resistant, underground water supply, column pipe application.",
+    "image": "",
+    "specs": {
+      "Brand": "Astral",
+      "Material": "uPVC",
+      "Size": "1/2 to 6 inch",
+      "Standard": "IS 4985"
+    }
+  },
+  {
+    "id": 3,
+    "name": "SWR Drainage Pipe",
+    "category": "pipes",
+    "emoji": "drain",
+    "bg": "#1e1e1e",
+    "price": "Rs.210/mtr",
+    "priceNum": 210,
+    "badge": null,
+    "desc": "Soil, waste and rainwater drainage system with ring fit joints.",
+    "image": "",
+    "specs": {
+      "Brand": "Supreme",
+      "Material": "PVC",
+      "Size": "75mm-160mm"
+    }
+  },
+  {
+    "id": 4,
+    "name": "Cera One Piece WC",
+    "category": "sanitaryware",
+    "emoji": "wc",
+    "bg": "#0a2a1a",
+    "price": "Rs.8500",
+    "priceNum": 8500,
+    "badge": "Premium",
+    "desc": "Siphonic action, soft close seat, dual flush 3/6L.",
+    "image": "",
+    "specs": {
+      "Brand": "Cera",
+      "Type": "One-Piece",
+      "Warranty": "5 Years"
+    }
+  },
+  {
+    "id": 5,
+    "name": "Hindware Wall Hung WC",
+    "category": "sanitaryware",
+    "emoji": "wc2",
+    "bg": "#1e0a2e",
+    "price": "Rs.12800",
+    "priceNum": 12800,
+    "badge": "New",
+    "desc": "Wall mounted with concealed cistern, rimless technology.",
+    "image": "",
+    "specs": {
+      "Brand": "Hindware",
+      "Type": "Wall Hung",
+      "Warranty": "5 Years"
+    }
+  },
+  {
+    "id": 6,
+    "name": "Wash Basin Counter Top",
+    "category": "sanitaryware",
+    "emoji": "basin",
+    "bg": "#0a1a2e",
+    "price": "Rs.4200",
+    "priceNum": 4200,
+    "badge": null,
+    "desc": "Vitreous china table top basin, multiple sizes available.",
+    "image": "",
+    "specs": {
+      "Brand": "Parryware",
+      "Size": "450x350mm",
+      "Warranty": "2 Years"
+    }
+  },
+  {
+    "id": 7,
+    "name": "Jaguar Single Lever Tap",
+    "category": "taps",
+    "emoji": "tap",
+    "bg": "#2a2a0a",
+    "price": "Rs.2800",
+    "priceNum": 2800,
+    "badge": "Bestseller",
+    "desc": "Chrome finish, ceramic disc cartridge, 15 year durability.",
+    "image": "",
+    "specs": {
+      "Brand": "Jaguar",
+      "Finish": "Chrome",
+      "Material": "Brass",
+      "Warranty": "10 Years"
+    }
+  },
+  {
+    "id": 8,
+    "name": "Basin Mixer Chrome",
+    "category": "taps",
+    "emoji": "mixer",
+    "bg": "#0a2a1a",
+    "price": "Rs.3500",
+    "priceNum": 3500,
+    "badge": null,
+    "desc": "Solid brass body, temperature limiter, ceramic disc.",
+    "image": "",
+    "specs": {
+      "Brand": "Cera",
+      "Finish": "Chrome",
+      "Material": "Brass",
+      "Warranty": "5 Years"
+    }
+  },
+  {
+    "id": 9,
+    "name": "Bib Cock Chrome",
+    "category": "taps",
+    "emoji": "bib",
+    "bg": "#0a1a3a",
+    "price": "Rs.480",
+    "priceNum": 480,
+    "badge": null,
+    "desc": "Brass body, chrome plated, quarter turn ceramic disc.",
+    "image": "",
+    "specs": {
+      "Brand": "Jaquar",
+      "Finish": "Chrome",
+      "Material": "Brass"
+    }
+  },
+  {
+    "id": 10,
+    "name": "Rain Shower Set 8 inch",
+    "category": "showers",
+    "emoji": "shower",
+    "bg": "#1e0a3a",
+    "price": "Rs.3200",
+    "priceNum": 3200,
+    "badge": "New",
+    "desc": "Overhead rain shower, stainless steel, anti-limescale nozzles.",
+    "image": "",
+    "specs": {
+      "Brand": "Cera",
+      "Size": "8 inch",
+      "Finish": "Chrome",
+      "Flow": "12 LPM"
+    }
+  },
+  {
+    "id": 11,
+    "name": "Hand Shower with Holder",
+    "category": "showers",
+    "emoji": "hand",
+    "bg": "#2a1a0a",
+    "price": "Rs.1100",
+    "priceNum": 1100,
+    "badge": null,
+    "desc": "3 function hand shower, 1.5m flexible hose, wall holder.",
+    "image": "",
+    "specs": {
+      "Brand": "Hindware",
+      "Functions": "3",
+      "Hose": "1.5m"
+    }
+  },
+  {
+    "id": 12,
+    "name": "Sintex Water Tank 500L",
+    "category": "tanks",
+    "emoji": "tank",
+    "bg": "#0a2a0a",
+    "price": "Rs.4800",
+    "priceNum": 4800,
+    "badge": "Bestseller",
+    "desc": "Triple layer insulated, UV stabilized, ISI marked.",
+    "image": "",
+    "specs": {
+      "Brand": "Sintex",
+      "Capacity": "500 Litres",
+      "Type": "Overhead",
+      "Warranty": "10 Years"
+    }
+  },
+  {
+    "id": 13,
+    "name": "Underground Tank 1000L",
+    "category": "tanks",
+    "emoji": "utank",
+    "bg": "#1a1a1a",
+    "price": "Rs.7200",
+    "priceNum": 7200,
+    "badge": null,
+    "desc": "HDPE, manhole with tight lid, ribbed design.",
+    "image": "",
+    "specs": {
+      "Brand": "Supreme",
+      "Capacity": "1000 Litres",
+      "Type": "Underground",
+      "Warranty": "10 Years"
+    }
+  },
+  {
+    "id": 14,
+    "name": "Brass Ball Valve",
+    "category": "hardware",
+    "emoji": "valve",
+    "bg": "#2a0a0a",
+    "price": "Rs.180",
+    "priceNum": 180,
+    "badge": null,
+    "desc": "Full bore brass ball valve, chrome plated, quarter turn.",
+    "image": "",
+    "specs": {
+      "Material": "Brass",
+      "Size": "1/2 to 2 inch",
+      "Finish": "Chrome",
+      "Warranty": "1 Year"
+    }
+  },
+  {
+    "id": 15,
+    "name": "GI Flexible Connector",
+    "category": "hardware",
+    "emoji": "flex",
+    "bg": "#1a0a0a",
+    "price": "Rs.320",
+    "priceNum": 320,
+    "badge": null,
+    "desc": "SS corrugated hose, PTFE wrapped ends, various lengths.",
+    "image": "",
+    "specs": {
+      "Type": "Flexible Hose",
+      "Material": "SS304",
+      "Sizes": "30-50cm",
+      "Pressure": "10 Bar"
+    }
+  }
+]
