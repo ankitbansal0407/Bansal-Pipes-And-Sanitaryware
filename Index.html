@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bansal Pipes & Sanitaryware — Shivpuri's #1 Choice</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800&family=Barlow+Condensed:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --black: #080a0f;
+  --dark: #0d1117;
+  --card: #111620;
+  --border: #1e2535;
+  --orange: #ff6b00;
+  --orange2: #ff9a3c;
+  --amber: #ffb347;
+  --white: #f0f2f5;
+  --muted: #7a8499;
+  --text: #c8d0e0;
+}
+html { scroll-behavior: smooth; }
+body { 
+  background: var(--black); 
+  color: var(--white); 
+  font-family: 'Barlow', sans-serif; 
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* CUSTOM SCROLLBAR */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 2px; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; width: 100%; z-index: 1000;
+  padding: 0 5%;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 72px;
+  background: rgba(8,10,15,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,107,0,0.2);
+}
+.nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-mark {
+  width: 44px; height: 44px;
+  background: var(--orange);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 900; color: white;
+  font-family: 'Bebas Neue', sans-serif;
+}
+.logo-text { line-height: 1; }
+.logo-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 2px; color: white; display: block; }
+.logo-sub { font-size: 0.6rem; letter-spacing: 4px; text-transform: uppercase; color: var(--orange); }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a { color: var(--muted); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; transition: color 0.3s; }
+.nav-links a:hover { color: var(--orange); }
+.nav-right { display: flex; align-items: center; gap: 14px; }
+.nav-call { color: var(--orange); font-weight: 700; font-size: 0.85rem; text-decoration: none; letter-spacing: 0.5px; }
+.nav-call:hover { color: var(--amber); }
+.cart-pill {
+  background: var(--orange); color: white;
+  padding: 8px 18px; border-radius: 2px;
+  font-weight: 700; font-size: 0.82rem; letter-spacing: 1px;
+  border: none; cursor: pointer; font-family: 'Barlow', sans-serif;
+  text-transform: uppercase; display: flex; align-items: center; gap: 8px;
+  transition: all 0.3s; clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+.cart-pill:hover { background: var(--amber); }
+.cart-badge { background: white; color: var(--orange); border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 0.68rem; font-weight: 900; }
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 100px 5% 60px;
+  position: relative; overflow: hidden;
+}
+/* Animated grid background */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: 
+    linear-gradient(rgba(255,107,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,107,0,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridMove 20s linear infinite;
+}
+@keyframes gridMove { from { transform: translateY(0); } to { transform: translateY(60px); } }
+.hero::after {
+  content: '';
+  position: absolute; bottom: -2px; left: 0; right: 0; height: 200px;
+  background: linear-gradient(to top, var(--black), transparent);
+}
+/* Glowing orbs */
+.hero-orb1 {
+  position: absolute; top: -200px; right: -100px;
+  width: 700px; height: 700px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,107,0,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-orb2 {
+  position: absolute; bottom: -100px; left: -200px;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,154,60,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-content { position: relative; z-index: 2; max-width: 1300px; margin: 0 auto; width: 100%; }
+.hero-top-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--orange); border-radius: 2px;
+  padding: 6px 14px; margin-bottom: 32px;
+  animation: fadeUp 0.8s ease both;
+}
+.hero-top-tag span { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); font-weight: 700; }
+.hero-dot { width: 6px; height: 6px; background: var(--orange); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.5)} }
+
+.hero-headline {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(5rem, 10vw, 9.5rem);
+  line-height: 0.9;
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+  animation: fadeUp 0.8s ease 0.1s both;
+}
+.hero-headline .line2 {
+  -webkit-text-stroke: 2px var(--orange);
+  color: transparent;
+}
+.hero-headline .line3 { color: var(--orange); }
+
+.hero-sub-row {
+  display: flex; gap: 60px; align-items: flex-start; margin-top: 32px;
+  animation: fadeUp 0.8s ease 0.2s both;
+}
+.hero-desc { max-width: 420px; font-size: 1.05rem; line-height: 1.7; color: var(--text); }
+.hero-desc strong { color: var(--orange); }
+.hero-actions { display: flex; flex-direction: column; gap: 12px; min-width: 200px; }
+.btn-fire {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  background: var(--orange); color: white;
+  padding: 16px 32px; font-weight: 800; font-size: 0.9rem;
+  letter-spacing: 2px; text-transform: uppercase; text-decoration: none;
+  border: none; cursor: pointer; font-family: 'Barlow', sans-serif;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  transition: all 0.3s; position: relative; overflow: hidden;
+}
+.btn-fire::before { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.1); transform: translateX(-100%); transition: transform 0.3s; }
+.btn-fire:hover::before { transform: translateX(0); }
+.btn-fire:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(255,107,0,0.4); }
+.btn-ghost {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  background: transparent; color: var(--white);
+  padding: 15px 32px; font-weight: 700; font-size: 0.9rem;
+  letter-spacing: 2px; text-transform: uppercase; text-decoration: none;
+  border: 1px solid var(--border); cursor: pointer; font-family: 'Barlow', sans-serif;
+  transition: all 0.3s;
+}
+.btn-ghost:hover { border-color: var(--orange); color: var(--orange); }
+
+/* Hero stats */
+.hero-stats-row {
+  display: flex; gap: 0; margin-top: 60px;
+  border: 1px solid var(--border); width: fit-content;
+  animation: fadeUp 0.8s ease 0.3s both;
+}
+.h-stat { padding: 20px 36px; border-right: 1px solid var(--border); }
+.h-stat:last-child { border-right: none; }
+.h-stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; color: var(--orange); line-height: 1; letter-spacing: 2px; }
+.h-stat-label { font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+/* Hero scrolling ticker */
+.ticker-wrap {
+  background: var(--orange); padding: 12px 0; overflow: hidden;
+  display: flex; white-space: nowrap;
+  position: relative; z-index: 2;
+}
+.ticker-track {
+  display: flex; gap: 0;
+  animation: ticker 25s linear infinite;
+}
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.ticker-item { padding: 0 24px; font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.9); }
+.ticker-sep { color: rgba(255,255,255,0.4); }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ─── ABOUT STRIP ─── */
+.about-strip {
+  padding: 80px 5%;
+  display: flex; gap: 80px; align-items: center;
+  max-width: 1300px; margin: 0 auto;
+}
+.about-visual { flex-shrink: 0; }
+.about-hexes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 280px; }
+.hex-card {
+  background: var(--card); border: 1px solid var(--border);
+  padding: 22px 18px; text-align: center;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  transition: all 0.3s;
+}
+.hex-card:hover { border-color: var(--orange); background: rgba(255,107,0,0.06); transform: translateY(-4px); }
+.hex-icon { font-size: 1.8rem; margin-bottom: 8px; }
+.hex-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--orange); letter-spacing: 1px; }
+.hex-lab { font-size: 0.7rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+.about-text { flex: 1; }
+.section-eyebrow { font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase; color: var(--orange); font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.section-eyebrow::before { content: ''; width: 30px; height: 2px; background: var(--orange); flex-shrink: 0; }
+.section-heading { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.8rem, 5vw, 4.5rem); line-height: 0.95; letter-spacing: 2px; margin-bottom: 20px; }
+.section-heading .accent { color: var(--orange); }
+.about-para { color: var(--text); line-height: 1.75; font-size: 0.98rem; margin-bottom: 28px; max-width: 500px; }
+.feature-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.feature-list li { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; color: var(--text); }
+.feature-list li::before { content: '▸'; color: var(--orange); font-size: 0.7rem; }
+
+/* ─── BRANDS ─── */
+.brands-section { background: var(--card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 48px 5%; }
+.brands-inner { max-width: 1300px; margin: 0 auto; display: flex; align-items: center; gap: 40px; flex-wrap: wrap; }
+.brands-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.brands-divider { width: 1px; height: 30px; background: var(--border); }
+.brands-grid { display: flex; gap: 8px; flex-wrap: wrap; flex: 1; }
+.brand-tag {
+  background: rgba(255,107,0,0.07); border: 1px solid rgba(255,107,0,0.2);
+  color: var(--orange2); padding: 7px 16px;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; transition: all 0.3s;
+}
+.brand-tag:hover { background: var(--orange); color: white; border-color: var(--orange); }
+
+/* ─── CATALOGUE ─── */
+.catalogue-section { padding: 90px 5%; }
+.catalogue-inner { max-width: 1300px; margin: 0 auto; }
+.cat-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
+.cat-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 28px; }
+.cat-filter-btn {
+  padding: 8px 20px; font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
+  background: transparent; border: 1px solid var(--border); color: var(--muted);
+  cursor: pointer; transition: all 0.25s;
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+}
+.cat-filter-btn:hover { border-color: var(--orange); color: var(--orange); }
+.cat-filter-btn.active { background: var(--orange); border-color: var(--orange); color: white; }
+.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2px; }
+.prod-card {
+  background: var(--card); border: 1px solid var(--border);
+  position: relative; overflow: hidden; cursor: pointer;
+  transition: all 0.35s; group: true;
+}
+.prod-card::before {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--orange), var(--amber));
+  transform: scaleX(0); transform-origin: left; transition: transform 0.35s;
+}
+.prod-card:hover::before { transform: scaleX(1); }
+.prod-card:hover { border-color: rgba(255,107,0,0.4); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+.prod-img-area {
+  height: 180px; display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  font-size: 72px;
+}
+.prod-img-bg { position: absolute; inset: 0; opacity: 0.08; transition: opacity 0.35s; }
+.prod-card:hover .prod-img-bg { opacity: 0.15; }
+.prod-badge {
+  position: absolute; top: 14px; left: 0;
+  background: var(--orange); color: white;
+  padding: 4px 12px 4px 8px; font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+}
+.prod-body { padding: 20px; }
+.prod-cat-tag { font-size: 0.65rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--orange); font-weight: 700; margin-bottom: 6px; }
+.prod-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.25rem; font-weight: 700; letter-spacing: 0.5px; color: var(--white); margin-bottom: 6px; }
+.prod-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.55; margin-bottom: 16px; }
+.prod-footer { display: flex; justify-content: space-between; align-items: center; }
+.prod-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--orange); letter-spacing: 1px; }
+.prod-actions { display: flex; gap: 6px; }
+.btn-card-view { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 7px 12px; font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; font-family: 'Barlow', sans-serif; font-weight: 700; transition: all 0.2s; }
+.btn-card-view:hover { border-color: var(--orange); color: var(--orange); }
+.btn-card-cart { background: var(--orange); color: white; padding: 7px 14px; font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; font-family: 'Barlow', sans-serif; font-weight: 700; border: none; transition: all 0.2s; clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px)); }
+.btn-card-cart:hover { background: var(--amber); }
+
+/* ─── ORDER ─── */
+.order-section { background: var(--card); border-top: 1px solid var(--border); padding: 90px 5%; }
+.order-inner { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.3fr; gap: 60px; }
+.cart-panel { }
+.cart-panel-head { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+.cart-panel-head span { color: var(--orange); }
+.cart-panel-list { min-height: 120px; }
+.c-item { display: flex; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.c-item-info { flex: 1; }
+.c-item-name { font-size: 0.88rem; font-weight: 600; margin-bottom: 2px; }
+.c-item-unit { font-size: 0.72rem; color: var(--muted); }
+.c-item-controls { display: flex; align-items: center; gap: 8px; }
+.c-qty-btn { background: var(--border); border: none; color: var(--white); width: 24px; height: 24px; cursor: pointer; font-size: 1rem; transition: background 0.2s; }
+.c-qty-btn:hover { background: var(--orange); }
+.c-item-qty { font-size: 0.9rem; font-weight: 700; min-width: 16px; text-align: center; }
+.c-item-price { color: var(--orange); font-family: 'Barlow Condensed', sans-serif; font-size: 0.95rem; font-weight: 700; min-width: 50px; text-align: right; }
+.c-remove { background: none; border: none; color: rgba(255,100,100,0.5); cursor: pointer; font-size: 1rem; transition: color 0.2s; }
+.c-remove:hover { color: #ef4444; }
+.cart-empty { text-align: center; padding: 40px; color: var(--muted); font-size: 0.9rem; }
+.cart-empty .icon { font-size: 2.5rem; margin-bottom: 10px; }
+.cart-total-row { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+.cart-total-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+.cart-total-amt { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--orange); letter-spacing: 2px; }
+.cart-note { font-size: 0.72rem; color: var(--muted); margin-top: 10px; border-left: 2px solid var(--border); padding-left: 10px; }
+
+/* ORDER FORM */
+.order-form-wrap { }
+.form-head { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px; margin-bottom: 24px; }
+.form-head span { color: var(--orange); }
+.f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.f-group { margin-bottom: 16px; }
+.f-label { display: block; font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; font-weight: 700; }
+.f-input {
+  width: 100%; background: var(--black); border: 1px solid var(--border);
+  color: var(--white); padding: 13px 16px; font-family: 'Barlow', sans-serif;
+  font-size: 0.92rem; outline: none; transition: border-color 0.2s;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+.f-input:focus { border-color: var(--orange); }
+.f-input::placeholder { color: var(--muted); font-size: 0.88rem; }
+select.f-input option { background: var(--dark); }
+.f-submit {
+  width: 100%; background: var(--orange); color: white; border: none;
+  padding: 18px; font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.1rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+  cursor: pointer; transition: all 0.3s; margin-top: 8px;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+}
+.f-submit:hover { background: var(--amber); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(255,107,0,0.3); }
+.success-panel { display: none; text-align: center; padding: 50px 0; }
+.success-panel.show { display: block; }
+.success-panel .big { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--orange); letter-spacing: 3px; margin: 16px 0 12px; }
+.success-panel p { color: var(--text); line-height: 1.7; }
+.success-panel .phone { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--orange); margin-top: 14px; }
+
+/* ─── CONTACT ─── */
+.contact-section { padding: 90px 5%; }
+.contact-inner { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 70px; }
+.contact-info { }
+.c-info-card {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 22px; background: var(--card); border: 1px solid var(--border);
+  margin-bottom: 12px; transition: all 0.3s;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+.c-info-card:hover { border-color: rgba(255,107,0,0.4); background: rgba(255,107,0,0.04); }
+.c-info-icon { width: 46px; height: 46px; background: rgba(255,107,0,0.1); border: 1px solid rgba(255,107,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+.c-info-body h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); margin-bottom: 5px; font-weight: 700; }
+.c-info-body p, .c-info-body a { color: var(--text); font-size: 0.9rem; line-height: 1.65; text-decoration: none; display: block; transition: color 0.2s; }
+.c-info-body a:hover { color: var(--orange); }
+.wa-link {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: #25D366; color: white; padding: 14px 28px;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+  text-decoration: none; margin-top: 16px; transition: all 0.3s;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+.wa-link:hover { background: #20ba59; transform: translateY(-2px); box-shadow: 0 10px 25px rgba(37,211,102,0.3); }
+.enquiry-form input, .enquiry-form textarea, .enquiry-form select {
+  width: 100%; background: var(--card); border: 1px solid var(--border);
+  color: var(--white); padding: 13px 16px; font-family: 'Barlow', sans-serif;
+  font-size: 0.9rem; outline: none; margin-bottom: 12px; transition: border-color 0.2s;
+}
+.enquiry-form input:focus, .enquiry-form textarea:focus { border-color: var(--orange); }
+.enquiry-form input::placeholder, .enquiry-form textarea::placeholder { color: var(--muted); }
+.enquiry-submit {
+  width: 100%; background: transparent; border: 2px solid var(--orange);
+  color: var(--orange); padding: 16px;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+  cursor: pointer; transition: all 0.3s;
+}
+.enquiry-submit:hover { background: var(--orange); color: white; }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--dark); border-top: 1px solid var(--border);
+  padding: 60px 5% 30px;
+}
+.footer-inner { max-width: 1300px; margin: 0 auto; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+.footer-brand-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 3px; margin-bottom: 12px; }
+.footer-brand-name span { color: var(--orange); }
+.footer-brand p { color: var(--muted); font-size: 0.88rem; line-height: 1.7; max-width: 260px; }
+.footer-col h5 { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; font-weight: 700; }
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 10px; }
+.footer-col a { color: var(--muted); text-decoration: none; font-size: 0.86rem; transition: color 0.2s; }
+.footer-col a:hover { color: var(--orange); }
+.footer-bottom { border-top: 1px solid var(--border); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.footer-bottom p { font-size: 0.8rem; color: var(--muted); }
+.footer-bottom .addr { font-size: 0.78rem; color: rgba(255,107,0,0.6); }
+
+/* ─── MODAL ─── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--card); border: 1px solid var(--border);
+  max-width: 500px; width: 94%; max-height: 90vh; overflow-y: auto;
+  position: relative; animation: modalIn 0.3s ease;
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+}
+@keyframes modalIn { from { opacity:0; transform:scale(0.93) translateY(20px); } to { opacity:1; transform:scale(1) translateY(0); } }
+.modal-close { position: absolute; top: 14px; right: 14px; background: rgba(255,255,255,0.06); border: none; color: var(--muted); width: 32px; height: 32px; cursor: pointer; font-size: 1rem; transition: all 0.2s; }
+.modal-close:hover { background: var(--orange); color: white; }
+.modal-emoji-area { height: 180px; display: flex; align-items: center; justify-content: center; font-size: 80px; position: relative; overflow: hidden; }
+.modal-content-body { padding: 24px; }
+.modal-cat { font-size: 0.65rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--orange); font-weight: 700; margin-bottom: 6px; }
+.modal-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.8rem; font-weight: 900; letter-spacing: 1px; margin-bottom: 6px; }
+.modal-price { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--orange); letter-spacing: 2px; margin: 8px 0; }
+.modal-desc { color: var(--text); font-size: 0.88rem; line-height: 1.6; margin-bottom: 16px; }
+.modal-specs { margin-bottom: 18px; }
+.spec-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+.spec-row:last-child { border-bottom: none; }
+.spec-row span:first-child { color: var(--muted); }
+.spec-row span:last-child { color: var(--white); font-weight: 600; }
+.modal-cart-btn {
+  width: 100%; background: var(--orange); color: white; border: none;
+  padding: 16px; font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.1rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+  cursor: pointer; transition: all 0.3s;
+}
+.modal-cart-btn:hover { background: var(--amber); }
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+  background: var(--card); border: 1px solid var(--orange);
+  border-left: 4px solid var(--orange); color: var(--white);
+  padding: 14px 22px; font-size: 0.88rem; font-weight: 600;
+  transform: translateY(80px); opacity: 0; transition: all 0.35s;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  max-width: 320px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ─── NO PRODUCTS ─── */
+.no-products { text-align: center; padding: 60px; color: var(--muted); grid-column: 1/-1; }
+.no-products .icon { font-size: 3rem; margin-bottom: 12px; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .about-strip { flex-direction: column; gap: 40px; }
+  .about-hexes { width: 100%; }
+  .order-inner, .contact-inner { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hero-sub-row { flex-direction: column; gap: 28px; }
+  .hero-stats-row { flex-wrap: wrap; }
+  .h-stat { border-right: none; border-bottom: 1px solid var(--border); width: 50%; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .f-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">
+    <div class="logo-mark">B</div>
+    <div class="logo-text">
+      <span class="logo-name">Bansal Pipes</span>
+      <span class="logo-sub">& Sanitaryware · Shivpuri</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#catalogue">Catalogue</a></li>
+    <li><a href="#order">Order</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a class="nav-call" href="tel:+919074804430">📞 9074804430</a>
+    <button class="cart-pill" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">
+      🛒 Cart <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" class="hero">
+  <div class="hero-orb1"></div>
+  <div class="hero-orb2"></div>
+  <div class="hero-content">
+    <div class="hero-top-tag">
+      <div class="hero-dot"></div>
+      <span>Shivpuri's #1 Sanitaryware Store · Est. 2005</span>
+    </div>
+    <div class="hero-headline">
+      <div>BANSAL</div>
+      <div class="line2">PIPES &</div>
+      <div class="line3">SANITARYWARE</div>
+    </div>
+    <div class="hero-sub-row">
+      <p class="hero-desc">Your one-stop destination for world-class bathroom fittings, pipes, sanitary ware & all plumbing solutions. Authorized dealer of <strong>India's top brands</strong> — quality you trust, prices that make sense.</p>
+      <div class="hero-actions">
+        <a href="#catalogue" class="btn-fire">Browse Catalogue →</a>
+        <a href="https://wa.me/919074804430" target="_blank" class="btn-ghost">WhatsApp Order</a>
+      </div>
+    </div>
+    <div class="hero-stats-row">
+      <div class="h-stat"><div class="h-stat-num">5000+</div><div class="h-stat-label">Products</div></div>
+      <div class="h-stat"><div class="h-stat-num">20+</div><div class="h-stat-label">Yrs Experience</div></div>
+      <div class="h-stat"><div class="h-stat-num">10K+</div><div class="h-stat-label">Happy Customers</div></div>
+      <div class="h-stat"><div class="h-stat-num">15+</div><div class="h-stat-label">Top Brands</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker">
+    <span class="ticker-item">Pipes & Fittings</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Sanitaryware</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Taps & Faucets</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Showers</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Water Tanks</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Hardware</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Authorized Dealer</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Free Delivery Shivpuri</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Wholesale Prices</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Pipes & Fittings</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Sanitaryware</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Taps & Faucets</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Showers</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Water Tanks</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Hardware</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Authorized Dealer</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Free Delivery Shivpuri</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Wholesale Prices</span><span class="ticker-sep">✦</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-strip">
+    <div class="about-visual">
+      <div class="about-hexes">
+        <div class="hex-card"><div class="hex-icon">🏆</div><div class="hex-val">20+</div><div class="hex-lab">Years in Business</div></div>
+        <div class="hex-card"><div class="hex-icon">📦</div><div class="hex-val">5K+</div><div class="hex-lab">Products Available</div></div>
+        <div class="hex-card"><div class="hex-icon">😊</div><div class="hex-val">10K+</div><div class="hex-lab">Happy Customers</div></div>
+        <div class="hex-card"><div class="hex-icon">🚚</div><div class="hex-val">Same</div><div class="hex-lab">Day Delivery</div></div>
+      </div>
+    </div>
+    <div class="about-text">
+      <div class="section-eyebrow">Who We Are</div>
+      <h2 class="section-heading">BUILT ON<br><span class="accent">TRUST &</span><br>QUALITY</h2>
+      <p class="about-para">Bansal Pipes & Sanitaryware has served Shivpuri and the surrounding region for over 20 years. We are your one-stop shop for all plumbing, bathroom, and sanitation needs — from PVC pipes to premium Italian-style bath fittings.</p>
+      <ul class="feature-list">
+        <li>Authorized dealer of Finolex, Astral, Cera, Hindware, Jaguar & more</li>
+        <li>Same-day delivery within Shivpuri, next-day across district</li>
+        <li>Expert technical guidance — free of charge</li>
+        <li>Wholesale & retail pricing with bulk discounts</li>
+        <li>Full range from budget to premium quality</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- BRANDS -->
+<div class="brands-section">
+  <div class="brands-inner">
+    <div class="brands-label">Authorized Dealer</div>
+    <div class="brands-divider"></div>
+    <div class="brands-grid">
+      <div class="brand-tag">Finolex</div>
+      <div class="brand-tag">Astral</div>
+      <div class="brand-tag">Cera</div>
+      <div class="brand-tag">Hindware</div>
+      <div class="brand-tag">Jaguar</div>
+      <div class="brand-tag">Supreme</div>
+      <div class="brand-tag">Parryware</div>
+      <div class="brand-tag">Prince</div>
+      <div class="brand-tag">Kohler</div>
+    </div>
+  </div>
+</div>
+
+<!-- CATALOGUE -->
+<section id="catalogue" class="catalogue-section">
+  <div class="catalogue-inner">
+    <div class="cat-header">
+      <div>
+        <div class="section-eyebrow">Our Products</div>
+        <h2 class="section-heading" style="font-size:clamp(2.4rem,4.5vw,3.8rem)">FULL<br><span style="color:var(--orange)">CATALOGUE</span></h2>
+      </div>
+    </div>
+    <div class="cat-filters" id="catFilters">
+      <button class="cat-filter-btn active" onclick="filterCat('all',this)">All Products</button>
+      <button class="cat-filter-btn" onclick="filterCat('pipes',this)">Pipes & Fittings</button>
+      <button class="cat-filter-btn" onclick="filterCat('sanitaryware',this)">Sanitaryware</button>
+      <button class="cat-filter-btn" onclick="filterCat('taps',this)">Taps & Faucets</button>
+      <button class="cat-filter-btn" onclick="filterCat('showers',this)">Showers</button>
+      <button class="cat-filter-btn" onclick="filterCat('tanks',this)">Tanks</button>
+      <button class="cat-filter-btn" onclick="filterCat('hardware',this)">Hardware</button>
+    </div>
+    <div class="products-grid" id="productsGrid"></div>
+  </div>
+</section>
+
+<!-- ORDER -->
+<section id="order" class="order-section">
+  <div class="order-inner">
+    <div class="cart-panel">
+      <div class="section-eyebrow">Step 1</div>
+      <div class="cart-panel-head">YOUR <span>CART</span></div>
+      <div class="cart-panel-list" id="cartList">
+        <div class="cart-empty"><div class="icon">🛒</div><p>Add products from the catalogue above to get started!</p></div>
+      </div>
+      <div id="cartTotalRow" style="display:none">
+        <div class="cart-total-row">
+          <div class="cart-total-label">Estimated Total</div>
+          <div class="cart-total-amt" id="cartTotalAmt">₹0</div>
+        </div>
+        <p class="cart-note">Final price confirmed by our team. GST & delivery charges extra.</p>
+      </div>
+    </div>
+    <div class="order-form-wrap">
+      <div class="section-eyebrow">Step 2</div>
+      <div class="form-head">YOUR <span>DETAILS</span></div>
+      <div id="orderForm">
+        <div class="f-row">
+          <div class="f-group"><label class="f-label">Full Name *</label><input class="f-input" id="fn" placeholder="Your full name"></div>
+          <div class="f-group"><label class="f-label">Phone *</label><input class="f-input" id="fp" type="tel" placeholder="9XXXXXXXXX"></div>
+        </div>
+        <div class="f-group"><label class="f-label">Email</label><input class="f-input" id="fe" type="email" placeholder="email@example.com"></div>
+        <div class="f-group"><label class="f-label">Delivery Address *</label><textarea class="f-input" id="fa" rows="2" placeholder="Full address with city & PIN"></textarea></div>
+        <div class="f-row">
+          <div class="f-group"><label class="f-label">Customer Type</label>
+            <select class="f-input" id="fct"><option>Homeowner</option><option>Contractor / Builder</option><option>Plumber</option><option>Interior Designer</option><option>Dealer / Retailer</option></select>
+          </div>
+          <div class="f-group"><label class="f-label">Delivery Preference</label>
+            <select class="f-input" id="fd"><option>Standard (1–2 Days)</option><option>Same Day (Extra Charges)</option><option>Self Pickup</option></select>
+          </div>
+        </div>
+        <div class="f-group"><label class="f-label">Special Requirements</label><textarea class="f-input" id="fno" rows="3" placeholder="Brand preferences, custom requirements, or products not listed..."></textarea></div>
+        <button class="f-submit" onclick="submitOrder()">⚡ SUBMIT ORDER REQUEST</button>
+      </div>
+      <div class="success-panel" id="successPanel">
+        <div style="font-size:3rem">✅</div>
+        <div class="big">ORDER PLACED!</div>
+        <p>Thank you! Our team will call you within 2 hours to confirm your order and share the final invoice.</p>
+        <div class="phone">📞 9074804430 &nbsp;|&nbsp; 9752433386</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="contact-inner">
+    <div>
+      <div class="section-eyebrow">Visit Us</div>
+      <h2 class="section-heading" style="font-size:clamp(2.4rem,4vw,3.5rem);margin-bottom:28px">FIND<br><span style="color:var(--orange)">US HERE</span></h2>
+      <div class="c-info-card">
+        <div class="c-info-icon">📍</div>
+        <div class="c-info-body"><h4>Our Store</h4><p>Bansal Pipes & Sanitaryware<br>Arya Samaj Road, Near Massan Baba Mandir<br>Shivpuri (M.P.) – 473551</p></div>
+      </div>
+      <div class="c-info-card">
+        <div class="c-info-icon">📞</div>
+        <div class="c-info-body"><h4>Call Us</h4><a href="tel:+919074804430">+91 90748 04430</a><a href="tel:+919752433386">+91 97524 33386</a></div>
+      </div>
+      <div class="c-info-card">
+        <div class="c-info-icon">✉️</div>
+        <div class="c-info-body"><h4>Email</h4><a href="mailto:Ankitbansal666@gmail.com">Ankitbansal666@gmail.com</a></div>
+      </div>
+      <div class="c-info-card">
+        <div class="c-info-icon">🕐</div>
+        <div class="c-info-body"><h4>Business Hours</h4><p>Mon – Sat: 9:00 AM – 7:00 PM<br>Sunday: 10:00 AM – 3:00 PM</p></div>
+      </div>
+      <a href="https://wa.me/919074804430" target="_blank" class="wa-link">💬 CHAT ON WHATSAPP →</a>
+    </div>
+    <div>
+      <div class="section-eyebrow">Quick Enquiry</div>
+      <h2 class="section-heading" style="font-size:clamp(2.4rem,4vw,3.5rem);margin-bottom:24px">SEND A<br><span style="color:var(--orange)">MESSAGE</span></h2>
+      <div class="enquiry-form">
+        <input type="text" placeholder="Your Name">
+        <input type="tel" placeholder="Phone Number">
+        <textarea rows="5" placeholder="Your enquiry or message..."></textarea>
+        <button class="enquiry-submit" onclick="showToast('✅ Message sent! We will reply shortly.')">SEND MESSAGE →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">BANSAL <span>PIPES</span></div>
+        <p style="color:var(--muted);font-size:0.88rem;line-height:1.7;max-width:260px;margin-bottom:12px">Your trusted partner for all plumbing and bathroom solutions in Shivpuri, M.P. Authorized dealer of top brands.</p>
+        <p style="color:rgba(255,107,0,0.5);font-size:0.78rem">📍 Arya Samaj Road, Near Massan Baba Mandir,<br>Shivpuri (M.P.) – 473551</p>
+      </div>
+      <div class="footer-col">
+        <h5>Categories</h5>
+        <ul>
+          <li><a href="#catalogue">Pipes & Fittings</a></li>
+          <li><a href="#catalogue">Sanitaryware</a></li>
+          <li><a href="#catalogue">Taps & Faucets</a></li>
+          <li><a href="#catalogue">Showers</a></li>
+          <li><a href="#catalogue">Water Tanks</a></li>
+          <li><a href="#catalogue">Hardware</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Top Brands</h5>
+        <ul>
+          <li><a href="#">Finolex</a></li>
+          <li><a href="#">Astral</a></li>
+          <li><a href="#">Cera</a></li>
+          <li><a href="#">Hindware</a></li>
+          <li><a href="#">Jaguar</a></li>
+          <li><a href="#">Supreme</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#catalogue">Catalogue</a></li>
+          <li><a href="#order">Place Order</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="https://wa.me/919074804430">WhatsApp Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Bansal Pipes & Sanitaryware. All Rights Reserved.</p>
+      <p style="color:var(--orange);font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;font-weight:700">9074804430 · 9752433386</p>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ──────────────────────────────
+const STORAGE_KEY = 'bansal_products_v1';
+
+const defaultProducts = [
+  {id:1,name:'Finolex CPVC Pipe',category:'pipes',emoji:'🔵',bg:'#1a3a5c',price:'₹120/mtr',priceNum:120,badge:'Bestseller',desc:'ISI marked, hot & cold water, 10 bar pressure rating. For residential & commercial.',specs:{Brand:'Finolex',Material:'CPVC',Size:'1/2" to 2"',Standard:'IS 15778',Use:'Hot & Cold Water'}},
+  {id:2,name:'Astral uPVC Pipe',category:'pipes',emoji:'🟠',bg:'#3a2010',price:'₹85/mtr',priceNum:85,badge:null,desc:'UV resistant, underground water supply, column pipe application.',specs:{Brand:'Astral',Material:'uPVC',Size:'1/2" to 6"',Standard:'IS 4985',Use:'Cold Water'}},
+  {id:3,name:'SWR Drainage Pipe',category:'pipes',emoji:'⚫',bg:'#1e1e1e',price:'₹210/mtr',priceNum:210,badge:null,desc:'Soil, waste & rainwater drainage system with ring fit joints.',specs:{Brand:'Supreme',Material:'PVC',Size:'75mm–160mm',Standard:'IS 13592',Use:'Drainage'}},
+  {id:4,name:'CPVC Elbow 90°',category:'pipes',emoji:'↩️',bg:'#1a3a5c',price:'₹35',priceNum:35,badge:null,desc:'CPVC fitting elbow for hot & cold water pipe joints.',specs:{Material:'CPVC',Angle:'90°',Size:'1/2" to 2"',Standard:'IS 15778'}},
+  {id:5,name:'Cera One Piece WC',category:'sanitaryware',emoji:'🚽',bg:'#0a2a1a',price:'₹8,500',priceNum:8500,badge:'Premium',desc:'Siphonic action, soft close seat cover, water saving 3/6L dual flush.',specs:{Brand:'Cera',Type:'One-Piece',Flush:'Dual 3/6L',Color:'Ivory White',Warranty:'5 Years'}},
+  {id:6,name:'Hindware Wall Hung WC',category:'sanitaryware',emoji:'🪠',bg:'#1e0a2e',price:'₹12,800',priceNum:12800,badge:'New',desc:'Modern wall mounted design with concealed cistern, rimless technology.',specs:{Brand:'Hindware',Type:'Wall Hung',Flush:'4.5L',Color:'White',Warranty:'5 Years'}},
+  {id:7,name:'Wash Basin Counter Top',category:'sanitaryware',emoji:'🪣',bg:'#0a1a2e',price:'₹4,200',priceNum:4200,badge:null,desc:'Vitreous china, table top basin, available in multiple sizes.',specs:{Brand:'Parryware',Type:'Counter Top',Size:'450×350mm',Color:'White',Warranty:'2 Years'}},
+  {id:8,name:'Jaguar Single Lever Tap',category:'taps',emoji:'🚰',bg:'#2a2a0a',price:'₹2,800',priceNum:2800,badge:'Bestseller',desc:'Chrome finish, ceramic disc cartridge, 15 year durability guarantee.',specs:{Brand:'Jaguar',Finish:'Chrome',Type:'Single Lever',Material:'Brass',Warranty:'10 Years'}},
+  {id:9,name:'Basin Mixer Chrome',category:'taps',emoji:'🔩',bg:'#0a2a1a',price:'₹3,500',priceNum:3500,badge:null,desc:'Solid brass body, temperature limiter, ceramic disc technology.',specs:{Brand:'Cera',Finish:'Chrome',Type:'Basin Mixer',Material:'Brass',Warranty:'5 Years'}},
+  {id:10,name:'Bib Cock Chrome',category:'taps',emoji:'💧',bg:'#0a1a3a',price:'₹480',priceNum:480,badge:null,desc:'Brass body, chrome plated, quarter turn ceramic disc operation.',specs:{Brand:'Jaquar',Finish:'Chrome',Type:'Bib Cock',Material:'Brass',Warranty:'5 Years'}},
+  {id:11,name:'Rain Shower Set 8"',category:'showers',emoji:'🚿',bg:'#1e0a3a',price:'₹3,200',priceNum:3200,badge:'New',desc:'Overhead rain shower, stainless steel body, anti-limescale nozzles.',specs:{Brand:'Cera',Size:'8 inch',Finish:'Chrome',Type:'Overhead',Flow:'12 LPM'}},
+  {id:12,name:'Hand Shower + Holder',category:'showers',emoji:'🪣',bg:'#2a1a0a',price:'₹1,100',priceNum:1100,badge:null,desc:'3 function hand shower, 1.5m flexible hose, wall holder included.',specs:{Brand:'Hindware',Functions:'3',HoseLength:'1.5m',Finish:'Chrome',Flow:'8 LPM'}},
+  {id:13,name:'Sintex Water Tank 500L',category:'tanks',emoji:'🪤',bg:'#0a2a0a',price:'₹4,800',priceNum:4800,badge:'Bestseller',desc:'Triple layer insulated, UV stabilized, ISI marked, 10 year warranty.',specs:{Brand:'Sintex',Capacity:'500 Litres',Type:'Overhead',Layers:'Triple Layer',Warranty:'10 Years'}},
+  {id:14,name:'Underground Tank 1000L',category:'tanks',emoji:'⬛',bg:'#1a1a1a',price:'₹7,200',priceNum:7200,badge:null,desc:'High density polyethylene, manhole with tight lid, ribbed design.',specs:{Brand:'Supreme',Capacity:'1000 Litres',Type:'Underground',Material:'HDPE',Warranty:'10 Years'}},
+  {id:15,name:'Brass Ball Valve',category:'hardware',emoji:'🔴',bg:'#2a0a0a',price:'₹180',priceNum:180,badge:null,desc:'Full bore brass ball valve, chrome plated, quarter turn operation.',specs:{Material:'Brass',Size:'1/2" to 2"',Type:'Full Bore',Finish:'Chrome',Warranty:'1 Year'}},
+  {id:16,name:'GI Flexible Connector',category:'hardware',emoji:'🔗',bg:'#1a0a0a',price:'₹320',priceNum:320,badge:null,desc:'Stainless steel corrugated hose, PTFE wrapped ends, various lengths.',specs:{Type:'Flexible Hose',Material:'SS304',Sizes:'30–50cm',Pressure:'10 Bar',Warranty:'1 Year'}},
+];
+
+function getProducts(){
+  try{const s=localStorage.getItem(STORAGE_KEY);if(s)return JSON.parse(s);}catch(e){}
+  return defaultProducts;
+}
+
+let products = getProducts();
+let cart = [];
+
+// Render product cards
+function renderProducts(filter='all'){
+  const grid=document.getElementById('productsGrid');
+  const list=filter==='all'?products:products.filter(p=>p.category===filter);
+  if(!list.length){grid.innerHTML='<div class="no-products"><div class="icon">📦</div><p>No products in this category</p></div>';return;}
+  grid.innerHTML=list.map(p=>`
+    <div class="prod-card" onclick="openModal(${p.id})">
+      <div class="prod-img-area">
+        <div class="prod-img-bg" style="background:${p.bg};filter:blur(30px);transform:scale(1.5)"></div>
+        <span style="position:relative;z-index:1">${p.emoji}</span>
+        ${p.badge?`<div class="prod-badge">${p.badge}</div>`:''}
+      </div>
+      <div class="prod-body">
+        <div class="prod-cat-tag">${p.category}</div>
+        <div class="prod-name">${p.name}</div>
+        <div class="prod-desc">${p.desc}</div>
+        <div class="prod-footer">
+          <div class="prod-price">${p.price}</div>
+          <div class="prod-actions">
+            <button class="btn-card-view" onclick="event.stopPropagation();openModal(${p.id})">View</button>
+            <button class="btn-card-cart" onclick="event.stopPropagation();addToCart(${p.id})">+ Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function filterCat(cat,btn){
+  document.querySelectorAll('.cat-filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts(cat);
+}
+
+// Cart
+function addToCart(id){
+  const p=products.find(x=>x.id===id);
+  const ex=cart.find(x=>x.id===id);
+  if(ex)ex.qty++;else cart.push({...p,qty:1});
+  updateCart();
+  showToast('✅ '+p.name+' added to cart!');
+}
+function changeQty(id,d){
+  const item=cart.find(x=>x.id===id);
+  if(!item)return;
+  item.qty+=d;
+  if(item.qty<=0)cart=cart.filter(x=>x.id!==id);
+  updateCart();
+}
+function removeItem(id){cart=cart.filter(x=>x.id!==id);updateCart();}
+function updateCart(){
+  const list=document.getElementById('cartList');
+  const tot=document.getElementById('cartTotalRow');
+  document.getElementById('cartBadge').textContent=cart.reduce((s,x)=>s+x.qty,0);
+  if(!cart.length){
+    list.innerHTML='<div class="cart-empty"><div class="icon">🛒</div><p>Add products from the catalogue above to get started!</p></div>';
+    tot.style.display='none';return;
+  }
+  list.innerHTML=cart.map(item=>`
+    <div class="c-item">
+      <div class="c-item-info">
+        <div class="c-item-name">${item.name}</div>
+        <div class="c-item-unit">${item.price}</div>
+      </div>
+      <div class="c-item-controls">
+        <button class="c-qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+        <span class="c-item-qty">${item.qty}</span>
+        <button class="c-qty-btn" onclick="changeQty(${item.id},1)">+</button>
+      </div>
+      <div class="c-item-price">×${item.qty}</div>
+      <button class="c-remove" onclick="removeItem(${item.id})">✕</button>
+    </div>`).join('');
+  const total=cart.reduce((s,x)=>s+x.priceNum*x.qty,0);
+  document.getElementById('cartTotalAmt').textContent='₹'+total.toLocaleString('en-IN');
+  tot.style.display='block';
+}
+
+// Modal
+function openModal(id){
+  const p=products.find(x=>x.id===id);if(!p)return;
+  document.getElementById('modalContent').innerHTML=`
+    <div class="modal-emoji-area" style="background:${p.bg}">
+      <span>${p.emoji}</span>
+    </div>
+    <div class="modal-content-body">
+      <div class="modal-cat">${p.category}</div>
+      <div class="modal-name">${p.name}</div>
+      <div class="modal-price">${p.price}</div>
+      <div class="modal-desc">${p.desc}</div>
+      <div class="modal-specs">${Object.entries(p.specs||{}).map(([k,v])=>`<div class="spec-row"><span>${k}</span><span>${v}</span></div>`).join('')}</div>
+      <button class="modal-cart-btn" onclick="addToCart(${p.id});closeModal()">🛒 ADD TO CART</button>
+    </div>`;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+// Order submit
+function submitOrder(){
+  const n=document.getElementById('fn').value.trim();
+  const ph=document.getElementById('fp').value.trim();
+  const a=document.getElementById('fa').value.trim();
+  if(!n||!ph||!a){showToast('⚠️ Please fill Name, Phone & Address');return;}
+  document.getElementById('orderForm').style.display='none';
+  document.getElementById('successPanel').classList.add('show');
+  cart=[];updateCart();
+}
+
+// Toast
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+// Sync from admin
+window.addEventListener('storage',function(e){
+  if(e.key===STORAGE_KEY){products=getProducts();renderProducts('all');document.querySelectorAll('.cat-filter-btn').forEach(b=>b.classList.remove('active'));document.querySelector('.cat-filter-btn').classList.add('active');}
+});
+
+renderProducts();
+</script>
+</body>
+</html>
