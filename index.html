@@ -333,11 +333,66 @@ select.f-input option { background: var(--dark); }
   clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
 }
 .f-submit:hover { background: var(--amber); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(255,107,0,0.3); }
-.success-panel { display: none; text-align: center; padding: 50px 0; }
-.success-panel.show { display: block; }
-.success-panel .big { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--orange); letter-spacing: 3px; margin: 16px 0 12px; }
-.success-panel p { color: var(--text); line-height: 1.7; }
-.success-panel .phone { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--orange); margin-top: 14px; }
+.success-panel { display: none; text-align: center; padding: 30px 0; }
+.success-panel.show { display: block; animation: fadeUp 0.5s ease; }
+.success-anim { margin-bottom: 20px; }
+.success-circle {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--orange), var(--amber));
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto; animation: popIn 0.5s ease;
+  box-shadow: 0 8px 30px rgba(255,107,0,0.4);
+}
+@keyframes popIn { from{transform:scale(0)} to{transform:scale(1)} }
+.success-check { font-size: 2.4rem; color: white; font-weight: 900; line-height: 1; }
+.success-panel .big { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; color: var(--orange); letter-spacing: 3px; margin: 10px 0 6px; }
+.success-sub { color: var(--text); font-size: 0.92rem; line-height: 1.6; margin-bottom: 20px; }
+.success-order-card {
+  background: var(--black); border: 1px solid rgba(255,107,0,0.3);
+  border-left: 4px solid var(--orange);
+  padding: 16px 20px; text-align: left; margin-bottom: 20px;
+  clip-path: polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+}
+.soc-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 0.84rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.soc-row:last-child { border-bottom: none; }
+.soc-row span:first-child { color: var(--muted); }
+.soc-row span:last-child { color: var(--white); font-weight: 600; max-width: 60%; text-align: right; }
+.success-promise {
+  display: flex; gap: 0; margin-bottom: 20px;
+  border: 1px solid var(--border);
+}
+.promise-item {
+  flex: 1; display: flex; align-items: center; gap: 10px;
+  padding: 14px 12px; border-right: 1px solid var(--border);
+  font-size: 0.8rem;
+}
+.promise-item:last-child { border-right: none; }
+.promise-item span { font-size: 1.4rem; flex-shrink: 0; }
+.promise-item strong { display: block; color: var(--white); font-size: 0.8rem; margin-bottom: 2px; }
+.promise-item small { color: var(--muted); font-size: 0.7rem; }
+.success-contacts { display: flex; gap: 10px; margin-bottom: 16px; }
+.success-call-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: transparent; border: 1px solid var(--orange); color: var(--orange);
+  padding: 13px; font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.9rem; font-weight: 800; letter-spacing: 1px; text-decoration: none;
+  transition: all 0.2s;
+}
+.success-call-btn:hover { background: var(--orange); color: white; }
+.success-wa-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: #25D366; color: white;
+  padding: 13px; font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.9rem; font-weight: 800; letter-spacing: 1px; text-decoration: none;
+  transition: all 0.2s;
+}
+.success-wa-btn:hover { background: #20ba59; }
+.success-new-btn {
+  background: transparent; border: 1px solid var(--border); color: var(--muted);
+  padding: 11px 24px; font-family: 'Barlow', sans-serif; font-size: 0.85rem;
+  font-weight: 700; cursor: pointer; transition: all 0.2s;
+}
+.success-new-btn:hover { border-color: var(--orange); color: var(--orange); }
 
 /* ─── CONTACT ─── */
 .contact-section { padding: 90px 5%; }
@@ -722,10 +777,20 @@ footer {
         <button class="f-submit" onclick="submitOrder()">⚡ SUBMIT ORDER REQUEST</button>
       </div>
       <div class="success-panel" id="successPanel">
-        <div style="font-size:3rem">✅</div>
-        <div class="big">ORDER PLACED!</div>
-        <p>Thank you! Our team will call you within 2 hours to confirm your order and share the final invoice.</p>
-        <div class="phone">📞 9074804430 &nbsp;|&nbsp; 9752433386</div>
+        <div class="success-anim"><div class="success-circle"><div class="success-check">&#10003;</div></div></div>
+        <div class="big">ORDER CONFIRMED!</div>
+        <p class="success-sub">Your order has been received. Our team will call you within 2 hours.</p>
+        <div class="success-order-card" id="successOrderCard"></div>
+        <div class="success-promise">
+          <div class="promise-item"><span>&#128222;</span><div><strong>Call Back</strong><small>Within 2 hours</small></div></div>
+          <div class="promise-item"><span>&#128231;</span><div><strong>Email Sent</strong><small>Check your inbox</small></div></div>
+          <div class="promise-item"><span>&#128666;</span><div><strong>Fast Delivery</strong><small>As per preference</small></div></div>
+        </div>
+        <div class="success-contacts">
+          <a href="tel:+919074804430" class="success-call-btn">&#128222; Call: 9074804430</a>
+          <a id="successWABtn" href="#" target="_blank" class="success-wa-btn">&#128172; WhatsApp Us</a>
+        </div>
+        <button class="success-new-btn" onclick="startNewOrder()">+ Place Another Order</button>
       </div>
     </div>
   </div>
@@ -1184,61 +1249,91 @@ document.getElementById('modal').addEventListener('click',function(e){if(e.targe
 // ─── ORDER SUBMIT ─────────────────────────────────────────
 function submitOrder(){requireLogin(()=>doSubmitOrder());}
 function doSubmitOrder(){
-  const n=document.getElementById('fn').value.trim();
-  const ph=document.getElementById('fp').value.trim();
-  const a=document.getElementById('fa').value.trim();
+  const n  = document.getElementById('fn').value.trim();
+  const ph = document.getElementById('fp').value.trim();
+  const a  = document.getElementById('fa').value.trim();
+  const em = document.getElementById('fe').value.trim();
   if(!n||!ph||!a){showToast('⚠️ Fill Name, Phone & Address');return;}
 
-  const cartItems=cart.map(x=>({name:x.name,qty:x.qty,price:x.price,priceNum:x.priceNum}));
-  const total=cart.reduce((s,x)=>s+x.priceNum*x.qty,0);
-  const itemsText=cartItems.map(x=>x.name+(x.qty>1?' x'+x.qty:'')).join(', ');
+  const cartItems  = cart.map(x=>({name:x.name,qty:x.qty,price:x.price,priceNum:x.priceNum}));
+  const total      = cart.reduce((s,x)=>s+x.priceNum*x.qty,0);
+  const totalFmt   = '₹'+total.toLocaleString('en-IN');
+  const itemsText  = cartItems.map(x=>x.name+(x.qty>1?' x'+x.qty:'')).join(', ');
+  const delivery   = document.getElementById('fd').value;
+  const custType   = document.getElementById('fct').value;
+  const notes      = document.getElementById('fno').value.trim();
+  const timeStr    = new Date().toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'});
+  const orderId    = 'ORD-'+Date.now().toString().slice(-6);
 
-  const orderData={
-    name:n, phone:ph, address:a,
-    email:document.getElementById('fe').value,
-    customerType:document.getElementById('fct').value,
-    delivery:document.getElementById('fd').value,
-    notes:document.getElementById('fno').value,
-    items:cartItems, totalEstimate:'₹'+total.toLocaleString('en-IN'),
-    type:'order'
+  const orderData = {
+    orderId, name:n, phone:ph, address:a, email:em,
+    customerType:custType, delivery, notes,
+    items:cartItems, totalEstimate:totalFmt, type:'order'
   };
 
   // 1️⃣ Save to Firebase
-  saveOrderToFirebase(orderData).then(()=>{
-    console.log('✅ Order saved to Firebase');
-  });
+  saveOrderToFirebase(orderData).then(()=>console.log('✅ Saved to Firebase'));
 
-  // 2️⃣ Send Email via EmailJS
-  const cfg=window._emailjsCfg||{};
+  // 2️⃣ Email to SHOP OWNER via EmailJS
+  const cfg = window._emailjsCfg||{};
   sendEmailNotification(cfg.EMAILJS_TEMPLATE_ORDER, {
-    customer_name: n,
-    customer_phone: ph,
-    customer_email: orderData.email||'—',
-    customer_type: orderData.customerType,
-    delivery_type: orderData.delivery,
-    address: a,
-    items: itemsText,
-    total: orderData.totalEstimate,
-    notes: orderData.notes||'—',
-    time: new Date().toLocaleString('en-IN')
+    to_name:          'Bansal Pipes Team',
+    order_id:         orderId,
+    customer_name:    n,
+    customer_phone:   ph,
+    customer_email:   em||'Not provided',
+    customer_type:    custType,
+    delivery_type:    delivery,
+    address:          a,
+    items:            itemsText,
+    total:            totalFmt,
+    notes:            notes||'None',
+    time:             timeStr
   });
 
-  // 3️⃣ WhatsApp notification
+  // 3️⃣ Build WhatsApp link (manual — customer clicks if they want)
   const waMsg =
-    '🛒 *NEW ORDER — Bansal Pipes*\n\n'+
-    '👤 *Name:* '+n+'\n'+
-    '📞 *Phone:* '+ph+'\n'+
-    '📦 *Items:* '+itemsText+'\n'+
-    '💰 *Total Est.:* '+orderData.totalEstimate+'\n'+
-    '📍 *Address:* '+a+'\n'+
-    '🚚 *Delivery:* '+orderData.delivery+'\n'+
-    '🕐 *Time:* '+new Date().toLocaleString('en-IN');
-  sendWhatsAppNotification(waMsg);
+    '*NEW ORDER — Bansal Pipes*\n\n'+
+    'Order ID: '+orderId+'\n'+
+    'Name: '+n+'\n'+
+    'Phone: '+ph+'\n'+
+    'Items: '+itemsText+'\n'+
+    'Total: '+totalFmt+'\n'+
+    'Address: '+a+'\n'+
+    'Delivery: '+delivery+'\n'+
+    'Time: '+timeStr;
+  const waURL = 'https://wa.me/919074804430?text='+encodeURIComponent(waMsg);
 
-  document.getElementById('orderForm').style.display='none';
+  // 4️⃣ Show rich confirmation panel
+  document.getElementById('successOrderCard').innerHTML =
+    '<div class="soc-row"><span>Order ID</span><span style="color:var(--orange);font-family:\'Barlow Condensed\',sans-serif;letter-spacing:1px">'+orderId+'</span></div>'+
+    '<div class="soc-row"><span>Customer</span><span>'+n+'</span></div>'+
+    '<div class="soc-row"><span>Phone</span><span>'+ph+'</span></div>'+
+    (em?'<div class="soc-row"><span>Email</span><span>'+em+'</span></div>':'')+
+    '<div class="soc-row"><span>Items</span><span>'+itemsText+'</span></div>'+
+    '<div class="soc-row"><span>Estimated Total</span><span style="color:var(--orange);font-weight:800">'+totalFmt+'</span></div>'+
+    '<div class="soc-row"><span>Delivery</span><span>'+delivery+'</span></div>';
+
+  document.getElementById('successWABtn').href = waURL;
+  document.getElementById('orderForm').style.display = 'none';
   document.getElementById('successPanel').classList.add('show');
-  cart=[];updateCart();
-  showToast('✅ Order placed! Check your WhatsApp.');
+  cart=[]; updateCart();
+  document.getElementById('successPanel').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function startNewOrder(){
+  document.getElementById('successPanel').classList.remove('show');
+  document.getElementById('orderForm').style.display = 'block';
+  document.getElementById('fn').value='';
+  document.getElementById('fp').value='';
+  document.getElementById('fe').value='';
+  document.getElementById('fa').value='';
+  document.getElementById('fno').value='';
+  if(currentUser){
+    document.getElementById('fn').value=currentUser.name;
+    document.getElementById('fp').value=currentUser.phone;
+  }
+  document.getElementById('order').scrollIntoView({behavior:'smooth'});
 }
 
 // ─── ENQUIRY SUBMIT ───────────────────────────────────────
@@ -1250,27 +1345,17 @@ function doSubmitEnquiry(){
   const data={name:currentUser.name,phone:currentUser.phone,message:msg,type:'enquiry'};
 
   // 1️⃣ Save to Firebase
-  saveEnquiryToFirebase(data).then(()=>{
-    console.log('✅ Enquiry saved to Firebase');
-  });
+  saveEnquiryToFirebase(data).then(()=>console.log('✅ Enquiry saved'));
 
-  // 2️⃣ Email notification
+  // 2️⃣ Email notification to shop owner
   const cfg=window._emailjsCfg||{};
   sendEmailNotification(cfg.EMAILJS_TEMPLATE_ENQ, {
-    customer_name: currentUser.name,
+    to_name:        'Bansal Pipes Team',
+    customer_name:  currentUser.name,
     customer_phone: currentUser.phone,
-    message: msg,
-    time: new Date().toLocaleString('en-IN')
+    message:        msg,
+    time:           new Date().toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})
   });
-
-  // 3️⃣ WhatsApp
-  const waMsg =
-    '💬 *NEW ENQUIRY — Bansal Pipes*\n\n'+
-    '👤 *Name:* '+currentUser.name+'\n'+
-    '📞 *Phone:* '+currentUser.phone+'\n'+
-    '📝 *Message:* '+msg+'\n'+
-    '🕐 *Time:* '+new Date().toLocaleString('en-IN');
-  sendWhatsAppNotification(waMsg);
 
   document.getElementById('eq_msg').value='';
   showToast('✅ Message sent! We will reply shortly.');
