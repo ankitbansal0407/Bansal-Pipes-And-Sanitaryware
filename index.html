@@ -396,6 +396,77 @@ footer {
 .footer-bottom p { font-size: 0.8rem; color: var(--muted); }
 .footer-bottom .addr { font-size: 0.78rem; color: rgba(255,107,0,0.6); }
 
+/* ─── OTP LOGIN MODAL ─── */
+.otp-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.92); z-index: 3000;
+  align-items: center; justify-content: center;
+  backdrop-filter: blur(6px);
+}
+.otp-overlay.open { display: flex; }
+.otp-box {
+  background: var(--card); border: 1px solid var(--border);
+  width: 420px; max-width: 95vw; overflow: hidden;
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+  animation: modalIn 0.3s ease;
+}
+.otp-top {
+  background: linear-gradient(135deg, var(--orange), var(--amber));
+  padding: 28px 28px 24px; text-align: center;
+}
+.otp-top .otp-icon { font-size: 2.6rem; margin-bottom: 8px; }
+.otp-top h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 3px; color: white; margin-bottom: 4px; }
+.otp-top p { font-size: 0.75rem; color: rgba(255,255,255,0.85); letter-spacing: 1px; }
+.otp-body { padding: 28px; }
+.otp-step { display: none; }
+.otp-step.active { display: block; }
+.otp-label { display: block; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; font-weight: 700; }
+.otp-input {
+  width: 100%; background: var(--black); border: 1px solid var(--border);
+  color: var(--white); padding: 13px 16px; font-family: 'Barlow', sans-serif;
+  font-size: 1rem; outline: none; transition: border-color 0.2s; margin-bottom: 14px;
+}
+.otp-input:focus { border-color: var(--orange); }
+.otp-input::placeholder { color: var(--muted); font-size: 0.88rem; }
+.otp-btn {
+  width: 100%; background: var(--orange); color: white; border: none;
+  padding: 15px; font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.05rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+  cursor: pointer; transition: all 0.3s;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+.otp-btn:hover { background: var(--amber); }
+.otp-err { color: #ef4444; font-size: 0.8rem; margin-top: 8px; text-align: center; min-height: 20px; }
+.otp-hint { font-size: 0.75rem; color: var(--muted); text-align: center; margin-top: 12px; }
+.otp-hint span { color: var(--orange); cursor: pointer; font-weight: 700; }
+.otp-hint span:hover { text-decoration: underline; }
+.otp-boxes { display: flex; gap: 10px; justify-content: center; margin-bottom: 14px; }
+.otp-digit {
+  width: 52px; height: 58px; background: var(--black); border: 2px solid var(--border);
+  color: var(--white); font-size: 1.6rem; font-weight: 800; text-align: center;
+  outline: none; font-family: 'Bebas Neue', sans-serif; transition: border-color 0.2s;
+}
+.otp-digit:focus { border-color: var(--orange); }
+.otp-phone-display { text-align: center; margin-bottom: 18px; }
+.otp-phone-display .num { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--orange); letter-spacing: 2px; }
+.otp-phone-display .sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+.otp-demo-note {
+  background: rgba(255,107,0,0.08); border: 1px solid rgba(255,107,0,0.25);
+  border-left: 3px solid var(--orange); padding: 10px 14px;
+  font-size: 0.76rem; color: var(--text); margin-bottom: 16px; line-height: 1.6;
+}
+.otp-demo-note strong { color: var(--orange); }
+/* Logged-in user bar */
+.user-bar {
+  display: none; align-items: center; gap: 10px;
+  background: rgba(255,107,0,0.1); border: 1px solid rgba(255,107,0,0.25);
+  padding: 6px 14px; border-radius: 2px; font-size: 0.8rem; color: var(--text);
+}
+.user-bar.show { display: flex; }
+.user-bar .u-num { color: var(--orange); font-weight: 700; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px; font-size: 0.9rem; }
+.user-bar .u-logout { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 0.75rem; margin-left: 6px; transition: color 0.2s; }
+.user-bar .u-logout:hover { color: #ef4444; }
+
 /* ─── MODAL ─── */
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
 .modal-overlay.open { display: flex; }
@@ -480,6 +551,11 @@ footer {
   </ul>
   <div class="nav-right">
     <a class="nav-call" href="tel:+919074804430">📞 9074804430</a>
+    <div class="user-bar" id="userBar">
+      <span>👤</span>
+      <span class="u-num" id="userBarNum"></span>
+      <button class="u-logout" onclick="logoutUser()">Logout ✕</button>
+    </div>
     <button class="cart-pill" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">
       🛒 Cart <span class="cart-badge" id="cartBadge">0</span>
     </button>
@@ -671,7 +747,7 @@ footer {
       </div>
       <div class="c-info-card">
         <div class="c-info-icon">✉️</div>
-        <div class="c-info-body"><h4>Email</h4><a href="mailto:Ankitbansal666@gmail.com">Ankitbansal666@gmail.com</a></div>
+        <div class="c-info-body"><h4>Email</h4><a href="/cdn-cgi/l/email-protection#aeefc0c5c7dacccfc0ddcfc2989898eec9c3cfc7c280cdc1c3"><span class="__cf_email__" data-cfemail="43022d282a3721222d30222f75757503242e222a2f6d202c2e">[email&#160;protected]</span></a></div>
       </div>
       <div class="c-info-card">
         <div class="c-info-icon">🕐</div>
@@ -683,10 +759,10 @@ footer {
       <div class="section-eyebrow">Quick Enquiry</div>
       <h2 class="section-heading" style="font-size:clamp(2.4rem,4vw,3.5rem);margin-bottom:24px">SEND A<br><span style="color:var(--orange)">MESSAGE</span></h2>
       <div class="enquiry-form">
-        <input type="text" placeholder="Your Name">
-        <input type="tel" placeholder="Phone Number">
-        <textarea rows="5" placeholder="Your enquiry or message..."></textarea>
-        <button class="enquiry-submit" onclick="showToast('✅ Message sent! We will reply shortly.')">SEND MESSAGE →</button>
+        <input type="text" id="eq_name" placeholder="Your Name" readonly style="opacity:0.6">
+        <input type="tel" id="eq_phone" placeholder="Phone Number" readonly style="opacity:0.6">
+        <textarea id="eq_msg" rows="5" placeholder="Your enquiry or message..."></textarea>
+        <button class="enquiry-submit" onclick="submitEnquiry()">SEND MESSAGE &rarr;</button>
       </div>
     </div>
   </div>
@@ -742,6 +818,44 @@ footer {
   </div>
 </footer>
 
+<!-- OTP LOGIN MODAL -->
+<div class="otp-overlay" id="otpOverlay">
+  <div class="otp-box">
+    <div class="otp-top">
+      <div class="otp-icon">📱</div>
+      <h2>LOGIN TO CONTINUE</h2>
+      <p>BANSAL PIPES &amp; SANITARYWARE</p>
+    </div>
+    <div class="otp-body">
+      <div class="otp-step active" id="otpStep1">
+        <label class="otp-label">Your Mobile Number</label>
+        <input class="otp-input" id="otpPhone" type="tel" maxlength="10" placeholder="10-digit mobile number" oninput="this.value=this.value.replace(/\D/g,'').slice(0,10)">
+        <label class="otp-label">Your Name</label>
+        <input class="otp-input" id="otpName" type="text" placeholder="Enter your full name">
+        <div class="otp-demo-note">An OTP will be sent to your mobile number for verification.</div>
+        <button class="otp-btn" onclick="sendOTP()">SEND OTP &rarr;</button>
+        <p class="otp-err" id="otpErr1"></p>
+      </div>
+      <div class="otp-step" id="otpStep2">
+        <div class="otp-phone-display">
+          <div class="num" id="otpPhoneShow"></div>
+          <div class="sub">Enter the 4-digit OTP sent to your number</div>
+        </div>
+        <div class="otp-demo-note">&#128273; <strong>Demo OTP:</strong> <strong id="demoOTPShow" style="font-size:1.1rem;letter-spacing:3px;color:var(--orange)">----</strong></div>
+        <div class="otp-boxes">
+          <input class="otp-digit" id="d1" maxlength="1" oninput="otpNext(this,'d2')" onkeydown="otpBack(event,this,'')">
+          <input class="otp-digit" id="d2" maxlength="1" oninput="otpNext(this,'d3')" onkeydown="otpBack(event,this,'d1')">
+          <input class="otp-digit" id="d3" maxlength="1" oninput="otpNext(this,'d4')" onkeydown="otpBack(event,this,'d2')">
+          <input class="otp-digit" id="d4" maxlength="1" oninput="otpNext(this,'')"   onkeydown="otpBack(event,this,'d3')">
+        </div>
+        <button class="otp-btn" onclick="verifyOTP()">VERIFY &amp; CONTINUE &rarr;</button>
+        <p class="otp-err" id="otpErr2"></p>
+        <p class="otp-hint">Didn&apos;t get OTP? <span onclick="resendOTP()">Resend OTP</span> &nbsp;|&nbsp; <span onclick="closeOTP()">Cancel</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL -->
 <div class="modal-overlay" id="modal">
   <div class="modal-box">
@@ -753,10 +867,15 @@ footer {
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<script>
-// ──────────────────────────────
-const STORAGE_KEY = 'bansal_products_v1';
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ─── STORAGE KEYS ───────────────────────────────────────
+const STORAGE_KEY      = 'bansal_products_v1';
+const USERS_KEY        = 'bansal_users_v1';
+const ENQUIRIES_KEY    = 'bansal_enquiries_v1';
+const ORDERS_KEY       = 'bansal_orders_v1';
+const SESSION_KEY      = 'bansal_session_v1';
 
+// ─── PRODUCTS ───────────────────────────────────────────
 const defaultProducts = [
   {id:1,name:'Finolex CPVC Pipe',category:'pipes',emoji:'🔵',bg:'#1a3a5c',price:'₹120/mtr',priceNum:120,badge:'Bestseller',desc:'ISI marked, hot & cold water, 10 bar pressure rating. For residential & commercial.',specs:{Brand:'Finolex',Material:'CPVC',Size:'1/2" to 2"',Standard:'IS 15778',Use:'Hot & Cold Water'}},
   {id:2,name:'Astral uPVC Pipe',category:'pipes',emoji:'🟠',bg:'#3a2010',price:'₹85/mtr',priceNum:85,badge:null,desc:'UV resistant, underground water supply, column pipe application.',specs:{Brand:'Astral',Material:'uPVC',Size:'1/2" to 6"',Standard:'IS 4985',Use:'Cold Water'}},
@@ -775,16 +894,154 @@ const defaultProducts = [
   {id:15,name:'Brass Ball Valve',category:'hardware',emoji:'🔴',bg:'#2a0a0a',price:'₹180',priceNum:180,badge:null,desc:'Full bore brass ball valve, chrome plated, quarter turn operation.',specs:{Material:'Brass',Size:'1/2" to 2"',Type:'Full Bore',Finish:'Chrome',Warranty:'1 Year'}},
   {id:16,name:'GI Flexible Connector',category:'hardware',emoji:'🔗',bg:'#1a0a0a',price:'₹320',priceNum:320,badge:null,desc:'Stainless steel corrugated hose, PTFE wrapped ends, various lengths.',specs:{Type:'Flexible Hose',Material:'SS304',Sizes:'30–50cm',Pressure:'10 Bar',Warranty:'1 Year'}},
 ];
-
-function getProducts(){
-  try{const s=localStorage.getItem(STORAGE_KEY);if(s)return JSON.parse(s);}catch(e){}
-  return defaultProducts;
-}
-
+function getProducts(){try{const s=localStorage.getItem(STORAGE_KEY);if(s)return JSON.parse(s);}catch(e){}return defaultProducts;}
 let products = getProducts();
 let cart = [];
 
-// Render product cards
+// ─── SESSION / AUTH ──────────────────────────────────────
+let currentUser = null; // {name, phone}
+let otpGenerated = '';
+let otpCallback  = null; // function to call after login
+
+function loadSession(){
+  try{const s=localStorage.getItem(SESSION_KEY);if(s){currentUser=JSON.parse(s);updateUserBar();}}catch(e){}
+}
+function saveSession(user){
+  currentUser=user;
+  localStorage.setItem(SESSION_KEY,JSON.stringify(user));
+  updateUserBar();
+}
+function logoutUser(){
+  currentUser=null;
+  localStorage.removeItem(SESSION_KEY);
+  updateUserBar();
+  showToast('👋 Logged out successfully');
+}
+function updateUserBar(){
+  const bar=document.getElementById('userBar');
+  const num=document.getElementById('userBarNum');
+  if(currentUser){
+    bar.classList.add('show');
+    num.textContent=currentUser.name+' · '+currentUser.phone;
+    // pre-fill forms
+    const eq_n=document.getElementById('eq_name');
+    const eq_p=document.getElementById('eq_phone');
+    if(eq_n){eq_n.value=currentUser.name;eq_n.style.opacity='1';}
+    if(eq_p){eq_p.value=currentUser.phone;eq_p.style.opacity='1';}
+    const fn=document.getElementById('fn');const fp=document.getElementById('fp');
+    if(fn&&!fn.value)fn.value=currentUser.name;
+    if(fp&&!fp.value)fp.value=currentUser.phone;
+  } else {
+    bar.classList.remove('show');
+  }
+}
+
+// ─── OTP MODAL ───────────────────────────────────────────
+function requireLogin(callback){
+  if(currentUser){callback();return;}
+  otpCallback=callback;
+  showOTP();
+}
+function showOTP(){
+  // reset
+  document.getElementById('otpStep1').classList.add('active');
+  document.getElementById('otpStep2').classList.remove('active');
+  document.getElementById('otpPhone').value='';
+  document.getElementById('otpName').value='';
+  document.getElementById('otpErr1').textContent='';
+  document.getElementById('otpErr2').textContent='';
+  ['d1','d2','d3','d4'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('otpOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('otpPhone').focus(),200);
+}
+function closeOTP(){
+  document.getElementById('otpOverlay').classList.remove('open');
+  otpCallback=null;
+}
+function sendOTP(){
+  const phone=document.getElementById('otpPhone').value.trim();
+  const name=document.getElementById('otpName').value.trim();
+  const err=document.getElementById('otpErr1');
+  if(phone.length!==10){err.textContent='⚠️ Please enter a valid 10-digit mobile number';return;}
+  if(!name){err.textContent='⚠️ Please enter your name';return;}
+  err.textContent='';
+  // Generate 4-digit OTP
+  otpGenerated=String(Math.floor(1000+Math.random()*9000));
+  document.getElementById('otpPhoneShow').textContent='+91 '+phone;
+  document.getElementById('demoOTPShow').textContent=otpGenerated;
+  document.getElementById('otpStep1').classList.remove('active');
+  document.getElementById('otpStep2').classList.add('active');
+  setTimeout(()=>document.getElementById('d1').focus(),100);
+  showToast('📲 OTP sent to +91 '+phone);
+}
+function resendOTP(){
+  otpGenerated=String(Math.floor(1000+Math.random()*9000));
+  document.getElementById('demoOTPShow').textContent=otpGenerated;
+  ['d1','d2','d3','d4'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('d1').focus();
+  document.getElementById('otpErr2').textContent='';
+  showToast('📲 New OTP sent!');
+}
+function verifyOTP(){
+  const entered=(['d1','d2','d3','d4'].map(id=>document.getElementById(id).value)).join('');
+  const err=document.getElementById('otpErr2');
+  if(entered.length!==4){err.textContent='⚠️ Please enter all 4 digits';return;}
+  if(entered!==otpGenerated){err.textContent='❌ Incorrect OTP. Please try again.';return;}
+  // SUCCESS
+  const phone=document.getElementById('otpPhone').value.trim();
+  const name=document.getElementById('otpName').value.trim();
+  const user={name,phone,loginTime:new Date().toISOString()};
+  // Save user to users list
+  saveUserRecord(user);
+  saveSession(user);
+  closeOTP();
+  showToast('✅ Welcome, '+name+'! You are logged in.');
+  if(otpCallback){const cb=otpCallback;otpCallback=null;cb();}
+}
+function otpNext(el,nextId){
+  el.value=el.value.replace(/\D/g,'');
+  if(el.value&&nextId)document.getElementById(nextId).focus();
+}
+function otpBack(e,el,prevId){
+  if(e.key==='Backspace'&&!el.value&&prevId)document.getElementById(prevId).focus();
+}
+
+// ─── SAVE USER RECORD ────────────────────────────────────
+function saveUserRecord(user){
+  try{
+    let users=[];
+    const raw=localStorage.getItem(USERS_KEY);
+    if(raw)users=JSON.parse(raw);
+    const existing=users.findIndex(u=>u.phone===user.phone);
+    if(existing>=0){users[existing].name=user.name;users[existing].lastLogin=new Date().toISOString();}
+    else{users.push({...user,firstSeen:new Date().toISOString(),lastLogin:new Date().toISOString()});}
+    localStorage.setItem(USERS_KEY,JSON.stringify(users));
+  }catch(e){}
+}
+
+// ─── SAVE ENQUIRY ────────────────────────────────────────
+function saveEnquiry(name,phone,message){
+  try{
+    let list=[];
+    const raw=localStorage.getItem(ENQUIRIES_KEY);
+    if(raw)list=JSON.parse(raw);
+    list.unshift({id:Date.now(),name,phone,message,time:new Date().toISOString(),type:'enquiry'});
+    localStorage.setItem(ENQUIRIES_KEY,JSON.stringify(list));
+  }catch(e){}
+}
+
+// ─── SAVE ORDER ──────────────────────────────────────────
+function saveOrder(orderData){
+  try{
+    let list=[];
+    const raw=localStorage.getItem(ORDERS_KEY);
+    if(raw)list=JSON.parse(raw);
+    list.unshift({id:Date.now(),...orderData,time:new Date().toISOString(),type:'order',status:'Pending'});
+    localStorage.setItem(ORDERS_KEY,JSON.stringify(list));
+  }catch(e){}
+}
+
+// ─── PRODUCTS ────────────────────────────────────────────
 function renderProducts(filter='all'){
   const grid=document.getElementById('productsGrid');
   const list=filter==='all'?products:products.filter(p=>p.category===filter);
@@ -804,20 +1061,20 @@ function renderProducts(filter='all'){
           <div class="prod-price">${p.price}</div>
           <div class="prod-actions">
             <button class="btn-card-view" onclick="event.stopPropagation();openModal(${p.id})">View</button>
-            <button class="btn-card-cart" onclick="event.stopPropagation();addToCart(${p.id})">+ Cart</button>
+            <button class="btn-card-cart" onclick="event.stopPropagation();addToCartGated(${p.id})">+ Cart</button>
           </div>
         </div>
       </div>
     </div>`).join('');
 }
-
 function filterCat(cat,btn){
   document.querySelectorAll('.cat-filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderProducts(cat);
 }
 
-// Cart
+// ─── CART ────────────────────────────────────────────────
+function addToCartGated(id){requireLogin(()=>addToCart(id));}
 function addToCart(id){
   const p=products.find(x=>x.id===id);
   const ex=cart.find(x=>x.id===id);
@@ -860,7 +1117,7 @@ function updateCart(){
   tot.style.display='block';
 }
 
-// Modal
+// ─── MODAL ───────────────────────────────────────────────
 function openModal(id){
   const p=products.find(x=>x.id===id);if(!p)return;
   document.getElementById('modalContent').innerHTML=`
@@ -873,37 +1130,68 @@ function openModal(id){
       <div class="modal-price">${p.price}</div>
       <div class="modal-desc">${p.desc}</div>
       <div class="modal-specs">${Object.entries(p.specs||{}).map(([k,v])=>`<div class="spec-row"><span>${k}</span><span>${v}</span></div>`).join('')}</div>
-      <button class="modal-cart-btn" onclick="addToCart(${p.id});closeModal()">🛒 ADD TO CART</button>
+      <button class="modal-cart-btn" onclick="addToCartGated(${p.id});closeModal()">🛒 ADD TO CART</button>
     </div>`;
   document.getElementById('modal').classList.add('open');
 }
 function closeModal(){document.getElementById('modal').classList.remove('open');}
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
-// Order submit
+// ─── ORDER SUBMIT ─────────────────────────────────────────
 function submitOrder(){
+  requireLogin(()=>doSubmitOrder());
+}
+function doSubmitOrder(){
   const n=document.getElementById('fn').value.trim();
   const ph=document.getElementById('fp').value.trim();
   const a=document.getElementById('fa').value.trim();
   if(!n||!ph||!a){showToast('⚠️ Please fill Name, Phone & Address');return;}
+  // Save order data
+  const cartItems=cart.map(x=>({name:x.name,qty:x.qty,price:x.price,priceNum:x.priceNum}));
+  const total=cart.reduce((s,x)=>s+x.priceNum*x.qty,0);
+  saveOrder({
+    name:n, phone:ph, address:a,
+    email:document.getElementById('fe').value,
+    customerType:document.getElementById('fct').value,
+    delivery:document.getElementById('fd').value,
+    notes:document.getElementById('fno').value,
+    items:cartItems, totalEstimate:'₹'+total.toLocaleString('en-IN')
+  });
   document.getElementById('orderForm').style.display='none';
   document.getElementById('successPanel').classList.add('show');
   cart=[];updateCart();
+  showToast('✅ Order placed! We will call you shortly.');
 }
 
-// Toast
+// ─── ENQUIRY SUBMIT ───────────────────────────────────────
+function submitEnquiry(){
+  requireLogin(()=>doSubmitEnquiry());
+}
+function doSubmitEnquiry(){
+  const msg=document.getElementById('eq_msg').value.trim();
+  if(!msg){showToast('⚠️ Please enter your message');return;}
+  saveEnquiry(currentUser.name, currentUser.phone, msg);
+  document.getElementById('eq_msg').value='';
+  showToast('✅ Message sent! We will reply shortly.');
+}
+
+// ─── TOAST ────────────────────────────────────────────────
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),3200);
 }
 
-// Sync from admin
+// ─── SYNC FROM ADMIN ──────────────────────────────────────
 window.addEventListener('storage',function(e){
-  if(e.key===STORAGE_KEY){products=getProducts();renderProducts('all');document.querySelectorAll('.cat-filter-btn').forEach(b=>b.classList.remove('active'));document.querySelector('.cat-filter-btn').classList.add('active');}
+  if(e.key===STORAGE_KEY){products=getProducts();renderProducts();}
 });
 
+// ─── INIT ─────────────────────────────────────────────────
+loadSession();
 renderProducts();
+updateCart();
 </script>
+
 </body>
 </html>
