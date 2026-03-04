@@ -867,41 +867,99 @@ footer {
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// ─── STORAGE KEYS ───────────────────────────────────────
-const STORAGE_KEY      = 'bansal_products_v1';
-const USERS_KEY        = 'bansal_users_v1';
-const ENQUIRIES_KEY    = 'bansal_enquiries_v1';
-const ORDERS_KEY       = 'bansal_orders_v1';
-const SESSION_KEY      = 'bansal_session_v1';
 
-// ─── PRODUCTS ───────────────────────────────────────────
+<!-- ═══════════════════════════════════════════════════════
+     FIREBASE SDK
+════════════════════════════════════════════════════════ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// ╔══════════════════════════════════════════════════╗
+// ║  🔧 PASTE YOUR FIREBASE CONFIG HERE (Step 3)    ║
+// ╚══════════════════════════════════════════════════╝
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyAbUlBVApL0sq62WOW7VqGwLbH3OAfA7R0",
+  authDomain:        "bansal-pipes-and-sanitaryware.firebaseapp.com",
+  databaseURL:       "https://bansal-pipes-and-sanitaryware-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:         "bansal-pipes-and-sanitaryware",
+  storageBucket:     "bansal-pipes-and-sanitaryware.firebasestorage.app",
+  messagingSenderId: "573945911105",
+  appId:             "1:573945911105:web:5ee976ece37afbb5e7b3c0"
+};
+
+// ╔══════════════════════════════════════════════════╗
+// ║  🔧 EMAILJS CONFIG (Step 6)                     ║
+// ╚══════════════════════════════════════════════════╝
+const EMAILJS_SERVICE_ID  = "service_fti0prv";
+const EMAILJS_TEMPLATE_ORDER = "template_vf41nop";
+const EMAILJS_TEMPLATE_ENQ   = "template_vf41nop";
+const EMAILJS_PUBLIC_KEY  = "_SayTySP-oqF3A_wb";
+
+// Your WhatsApp number (with country code, no +)
+const WHATSAPP_NUMBER = "919074804430";
+
+// ── Firebase init ────────────────────────────────────────
+let db = null;
+let firebaseReady = false;
+try {
+  const app = initializeApp(FIREBASE_CONFIG);
+  db = getDatabase(app);
+  firebaseReady = true;
+  console.log("✅ Firebase connected");
+} catch(e) {
+  console.warn("⚠️ Firebase not configured yet:", e.message);
+}
+
+// ── Expose helpers to global scope ───────────────────────
+window._firebase = { db, ref, push, set, onValue, firebaseReady };
+window._emailjsCfg = { EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ORDER, EMAILJS_TEMPLATE_ENQ, EMAILJS_PUBLIC_KEY };
+window._whatsapp   = WHATSAPP_NUMBER;
+
+// ── Fire init after module loads ─────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  if(typeof window.bansalInit === 'function') window.bansalInit();
+});
+</script>
+
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<!-- ═══════════════════════════════════════════════════════
+     MAIN APP SCRIPT
+════════════════════════════════════════════════════════ -->
+<script>
+// ─── STORAGE KEYS (local fallback) ──────────────────────
+const STORAGE_KEY   = 'bansal_products_v1';
+const SESSION_KEY   = 'bansal_session_v1';
+
+// ─── PRODUCTS ────────────────────────────────────────────
 const defaultProducts = [
-  {id:1,name:'Finolex CPVC Pipe',category:'pipes',emoji:'🔵',bg:'#1a3a5c',price:'₹120/mtr',priceNum:120,badge:'Bestseller',desc:'ISI marked, hot & cold water, 10 bar pressure rating. For residential & commercial.',specs:{Brand:'Finolex',Material:'CPVC',Size:'1/2" to 2"',Standard:'IS 15778',Use:'Hot & Cold Water'}},
-  {id:2,name:'Astral uPVC Pipe',category:'pipes',emoji:'🟠',bg:'#3a2010',price:'₹85/mtr',priceNum:85,badge:null,desc:'UV resistant, underground water supply, column pipe application.',specs:{Brand:'Astral',Material:'uPVC',Size:'1/2" to 6"',Standard:'IS 4985',Use:'Cold Water'}},
-  {id:3,name:'SWR Drainage Pipe',category:'pipes',emoji:'⚫',bg:'#1e1e1e',price:'₹210/mtr',priceNum:210,badge:null,desc:'Soil, waste & rainwater drainage system with ring fit joints.',specs:{Brand:'Supreme',Material:'PVC',Size:'75mm–160mm',Standard:'IS 13592',Use:'Drainage'}},
+  {id:1,name:'Finolex CPVC Pipe',category:'pipes',emoji:'🔵',bg:'#1a3a5c',price:'₹120/mtr',priceNum:120,badge:'Bestseller',desc:'ISI marked, hot & cold water, 10 bar pressure rating.',specs:{Brand:'Finolex',Material:'CPVC',Size:'1/2" to 2"',Standard:'IS 15778',Use:'Hot & Cold Water'}},
+  {id:2,name:'Astral uPVC Pipe',category:'pipes',emoji:'🟠',bg:'#3a2010',price:'₹85/mtr',priceNum:85,badge:null,desc:'UV resistant, underground water supply, column pipe.',specs:{Brand:'Astral',Material:'uPVC',Size:'1/2" to 6"',Standard:'IS 4985',Use:'Cold Water'}},
+  {id:3,name:'SWR Drainage Pipe',category:'pipes',emoji:'⚫',bg:'#1e1e1e',price:'₹210/mtr',priceNum:210,badge:null,desc:'Soil, waste & rainwater drainage system.',specs:{Brand:'Supreme',Material:'PVC',Size:'75mm–160mm',Standard:'IS 13592',Use:'Drainage'}},
   {id:4,name:'CPVC Elbow 90°',category:'pipes',emoji:'↩️',bg:'#1a3a5c',price:'₹35',priceNum:35,badge:null,desc:'CPVC fitting elbow for hot & cold water pipe joints.',specs:{Material:'CPVC',Angle:'90°',Size:'1/2" to 2"',Standard:'IS 15778'}},
-  {id:5,name:'Cera One Piece WC',category:'sanitaryware',emoji:'🚽',bg:'#0a2a1a',price:'₹8,500',priceNum:8500,badge:'Premium',desc:'Siphonic action, soft close seat cover, water saving 3/6L dual flush.',specs:{Brand:'Cera',Type:'One-Piece',Flush:'Dual 3/6L',Color:'Ivory White',Warranty:'5 Years'}},
-  {id:6,name:'Hindware Wall Hung WC',category:'sanitaryware',emoji:'🪠',bg:'#1e0a2e',price:'₹12,800',priceNum:12800,badge:'New',desc:'Modern wall mounted design with concealed cistern, rimless technology.',specs:{Brand:'Hindware',Type:'Wall Hung',Flush:'4.5L',Color:'White',Warranty:'5 Years'}},
-  {id:7,name:'Wash Basin Counter Top',category:'sanitaryware',emoji:'🪣',bg:'#0a1a2e',price:'₹4,200',priceNum:4200,badge:null,desc:'Vitreous china, table top basin, available in multiple sizes.',specs:{Brand:'Parryware',Type:'Counter Top',Size:'450×350mm',Color:'White',Warranty:'2 Years'}},
-  {id:8,name:'Jaguar Single Lever Tap',category:'taps',emoji:'🚰',bg:'#2a2a0a',price:'₹2,800',priceNum:2800,badge:'Bestseller',desc:'Chrome finish, ceramic disc cartridge, 15 year durability guarantee.',specs:{Brand:'Jaguar',Finish:'Chrome',Type:'Single Lever',Material:'Brass',Warranty:'10 Years'}},
-  {id:9,name:'Basin Mixer Chrome',category:'taps',emoji:'🔩',bg:'#0a2a1a',price:'₹3,500',priceNum:3500,badge:null,desc:'Solid brass body, temperature limiter, ceramic disc technology.',specs:{Brand:'Cera',Finish:'Chrome',Type:'Basin Mixer',Material:'Brass',Warranty:'5 Years'}},
-  {id:10,name:'Bib Cock Chrome',category:'taps',emoji:'💧',bg:'#0a1a3a',price:'₹480',priceNum:480,badge:null,desc:'Brass body, chrome plated, quarter turn ceramic disc operation.',specs:{Brand:'Jaquar',Finish:'Chrome',Type:'Bib Cock',Material:'Brass',Warranty:'5 Years'}},
-  {id:11,name:'Rain Shower Set 8"',category:'showers',emoji:'🚿',bg:'#1e0a3a',price:'₹3,200',priceNum:3200,badge:'New',desc:'Overhead rain shower, stainless steel body, anti-limescale nozzles.',specs:{Brand:'Cera',Size:'8 inch',Finish:'Chrome',Type:'Overhead',Flow:'12 LPM'}},
-  {id:12,name:'Hand Shower + Holder',category:'showers',emoji:'🪣',bg:'#2a1a0a',price:'₹1,100',priceNum:1100,badge:null,desc:'3 function hand shower, 1.5m flexible hose, wall holder included.',specs:{Brand:'Hindware',Functions:'3',HoseLength:'1.5m',Finish:'Chrome',Flow:'8 LPM'}},
-  {id:13,name:'Sintex Water Tank 500L',category:'tanks',emoji:'🪤',bg:'#0a2a0a',price:'₹4,800',priceNum:4800,badge:'Bestseller',desc:'Triple layer insulated, UV stabilized, ISI marked, 10 year warranty.',specs:{Brand:'Sintex',Capacity:'500 Litres',Type:'Overhead',Layers:'Triple Layer',Warranty:'10 Years'}},
-  {id:14,name:'Underground Tank 1000L',category:'tanks',emoji:'⬛',bg:'#1a1a1a',price:'₹7,200',priceNum:7200,badge:null,desc:'High density polyethylene, manhole with tight lid, ribbed design.',specs:{Brand:'Supreme',Capacity:'1000 Litres',Type:'Underground',Material:'HDPE',Warranty:'10 Years'}},
-  {id:15,name:'Brass Ball Valve',category:'hardware',emoji:'🔴',bg:'#2a0a0a',price:'₹180',priceNum:180,badge:null,desc:'Full bore brass ball valve, chrome plated, quarter turn operation.',specs:{Material:'Brass',Size:'1/2" to 2"',Type:'Full Bore',Finish:'Chrome',Warranty:'1 Year'}},
-  {id:16,name:'GI Flexible Connector',category:'hardware',emoji:'🔗',bg:'#1a0a0a',price:'₹320',priceNum:320,badge:null,desc:'Stainless steel corrugated hose, PTFE wrapped ends, various lengths.',specs:{Type:'Flexible Hose',Material:'SS304',Sizes:'30–50cm',Pressure:'10 Bar',Warranty:'1 Year'}},
+  {id:5,name:'Cera One Piece WC',category:'sanitaryware',emoji:'🚽',bg:'#0a2a1a',price:'₹8,500',priceNum:8500,badge:'Premium',desc:'Siphonic action, soft close seat, dual flush 3/6L.',specs:{Brand:'Cera',Type:'One-Piece',Flush:'Dual 3/6L',Color:'Ivory White',Warranty:'5 Years'}},
+  {id:6,name:'Hindware Wall Hung WC',category:'sanitaryware',emoji:'🪠',bg:'#1e0a2e',price:'₹12,800',priceNum:12800,badge:'New',desc:'Wall mounted, concealed cistern, rimless technology.',specs:{Brand:'Hindware',Type:'Wall Hung',Flush:'4.5L',Color:'White',Warranty:'5 Years'}},
+  {id:7,name:'Wash Basin Counter Top',category:'sanitaryware',emoji:'🪣',bg:'#0a1a2e',price:'₹4,200',priceNum:4200,badge:null,desc:'Vitreous china, table top basin.',specs:{Brand:'Parryware',Type:'Counter Top',Size:'450×350mm',Color:'White',Warranty:'2 Years'}},
+  {id:8,name:'Jaguar Single Lever Tap',category:'taps',emoji:'🚰',bg:'#2a2a0a',price:'₹2,800',priceNum:2800,badge:'Bestseller',desc:'Chrome finish, ceramic disc cartridge.',specs:{Brand:'Jaguar',Finish:'Chrome',Type:'Single Lever',Material:'Brass',Warranty:'10 Years'}},
+  {id:9,name:'Basin Mixer Chrome',category:'taps',emoji:'🔩',bg:'#0a2a1a',price:'₹3,500',priceNum:3500,badge:null,desc:'Solid brass body, temperature limiter.',specs:{Brand:'Cera',Finish:'Chrome',Type:'Basin Mixer',Material:'Brass',Warranty:'5 Years'}},
+  {id:10,name:'Bib Cock Chrome',category:'taps',emoji:'💧',bg:'#0a1a3a',price:'₹480',priceNum:480,badge:null,desc:'Brass body, chrome plated, quarter turn.',specs:{Brand:'Jaquar',Finish:'Chrome',Type:'Bib Cock',Material:'Brass',Warranty:'5 Years'}},
+  {id:11,name:'Rain Shower Set 8"',category:'showers',emoji:'🚿',bg:'#1e0a3a',price:'₹3,200',priceNum:3200,badge:'New',desc:'Overhead rain shower, anti-limescale nozzles.',specs:{Brand:'Cera',Size:'8 inch',Finish:'Chrome',Type:'Overhead',Flow:'12 LPM'}},
+  {id:12,name:'Hand Shower + Holder',category:'showers',emoji:'🪣',bg:'#2a1a0a',price:'₹1,100',priceNum:1100,badge:null,desc:'3 function hand shower, 1.5m flexible hose.',specs:{Brand:'Hindware',Functions:'3',HoseLength:'1.5m',Finish:'Chrome',Flow:'8 LPM'}},
+  {id:13,name:'Sintex Water Tank 500L',category:'tanks',emoji:'🪤',bg:'#0a2a0a',price:'₹4,800',priceNum:4800,badge:'Bestseller',desc:'Triple layer, UV stabilized, ISI marked.',specs:{Brand:'Sintex',Capacity:'500 Litres',Type:'Overhead',Layers:'Triple Layer',Warranty:'10 Years'}},
+  {id:14,name:'Underground Tank 1000L',category:'tanks',emoji:'⬛',bg:'#1a1a1a',price:'₹7,200',priceNum:7200,badge:null,desc:'High density polyethylene, manhole with tight lid.',specs:{Brand:'Supreme',Capacity:'1000 Litres',Type:'Underground',Material:'HDPE',Warranty:'10 Years'}},
+  {id:15,name:'Brass Ball Valve',category:'hardware',emoji:'🔴',bg:'#2a0a0a',price:'₹180',priceNum:180,badge:null,desc:'Full bore brass ball valve, chrome plated.',specs:{Material:'Brass',Size:'1/2" to 2"',Type:'Full Bore',Finish:'Chrome',Warranty:'1 Year'}},
+  {id:16,name:'GI Flexible Connector',category:'hardware',emoji:'🔗',bg:'#1a0a0a',price:'₹320',priceNum:320,badge:null,desc:'Stainless steel corrugated hose, PTFE wrapped ends.',specs:{Type:'Flexible Hose',Material:'SS304',Sizes:'30–50cm',Pressure:'10 Bar',Warranty:'1 Year'}},
 ];
 function getProducts(){try{const s=localStorage.getItem(STORAGE_KEY);if(s)return JSON.parse(s);}catch(e){}return defaultProducts;}
 let products = getProducts();
 let cart = [];
 
 // ─── SESSION / AUTH ──────────────────────────────────────
-let currentUser = null; // {name, phone}
+let currentUser = null;
 let otpGenerated = '';
-let otpCallback  = null; // function to call after login
+let otpCallback  = null;
 
 function loadSession(){
   try{const s=localStorage.getItem(SESSION_KEY);if(s){currentUser=JSON.parse(s);updateUserBar();}}catch(e){}
@@ -912,10 +970,8 @@ function saveSession(user){
   updateUserBar();
 }
 function logoutUser(){
-  currentUser=null;
-  localStorage.removeItem(SESSION_KEY);
-  updateUserBar();
-  showToast('👋 Logged out successfully');
+  currentUser=null;localStorage.removeItem(SESSION_KEY);updateUserBar();
+  showToast('👋 Logged out');
 }
 function updateUserBar(){
   const bar=document.getElementById('userBar');
@@ -923,7 +979,6 @@ function updateUserBar(){
   if(currentUser){
     bar.classList.add('show');
     num.textContent=currentUser.name+' · '+currentUser.phone;
-    // pre-fill forms
     const eq_n=document.getElementById('eq_name');
     const eq_p=document.getElementById('eq_phone');
     if(eq_n){eq_n.value=currentUser.name;eq_n.style.opacity='1';}
@@ -937,13 +992,8 @@ function updateUserBar(){
 }
 
 // ─── OTP MODAL ───────────────────────────────────────────
-function requireLogin(callback){
-  if(currentUser){callback();return;}
-  otpCallback=callback;
-  showOTP();
-}
+function requireLogin(cb){if(currentUser){cb();return;}otpCallback=cb;showOTP();}
 function showOTP(){
-  // reset
   document.getElementById('otpStep1').classList.add('active');
   document.getElementById('otpStep2').classList.remove('active');
   document.getElementById('otpPhone').value='';
@@ -954,25 +1004,21 @@ function showOTP(){
   document.getElementById('otpOverlay').classList.add('open');
   setTimeout(()=>document.getElementById('otpPhone').focus(),200);
 }
-function closeOTP(){
-  document.getElementById('otpOverlay').classList.remove('open');
-  otpCallback=null;
-}
+function closeOTP(){document.getElementById('otpOverlay').classList.remove('open');otpCallback=null;}
 function sendOTP(){
   const phone=document.getElementById('otpPhone').value.trim();
   const name=document.getElementById('otpName').value.trim();
   const err=document.getElementById('otpErr1');
-  if(phone.length!==10){err.textContent='⚠️ Please enter a valid 10-digit mobile number';return;}
-  if(!name){err.textContent='⚠️ Please enter your name';return;}
+  if(phone.length!==10){err.textContent='⚠️ Enter valid 10-digit number';return;}
+  if(!name){err.textContent='⚠️ Enter your name';return;}
   err.textContent='';
-  // Generate 4-digit OTP
   otpGenerated=String(Math.floor(1000+Math.random()*9000));
   document.getElementById('otpPhoneShow').textContent='+91 '+phone;
   document.getElementById('demoOTPShow').textContent=otpGenerated;
   document.getElementById('otpStep1').classList.remove('active');
   document.getElementById('otpStep2').classList.add('active');
   setTimeout(()=>document.getElementById('d1').focus(),100);
-  showToast('📲 OTP sent to +91 '+phone);
+  showToast('📲 OTP: '+otpGenerated+' (Demo Mode)');
 }
 function resendOTP(){
   otpGenerated=String(Math.floor(1000+Math.random()*9000));
@@ -980,65 +1026,68 @@ function resendOTP(){
   ['d1','d2','d3','d4'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('d1').focus();
   document.getElementById('otpErr2').textContent='';
-  showToast('📲 New OTP sent!');
+  showToast('📲 New OTP: '+otpGenerated);
 }
 function verifyOTP(){
   const entered=(['d1','d2','d3','d4'].map(id=>document.getElementById(id).value)).join('');
   const err=document.getElementById('otpErr2');
-  if(entered.length!==4){err.textContent='⚠️ Please enter all 4 digits';return;}
-  if(entered!==otpGenerated){err.textContent='❌ Incorrect OTP. Please try again.';return;}
-  // SUCCESS
+  if(entered.length!==4){err.textContent='⚠️ Enter all 4 digits';return;}
+  if(entered!==otpGenerated){err.textContent='❌ Wrong OTP. Try again.';return;}
   const phone=document.getElementById('otpPhone').value.trim();
   const name=document.getElementById('otpName').value.trim();
   const user={name,phone,loginTime:new Date().toISOString()};
-  // Save user to users list
-  saveUserRecord(user);
+  saveUserToFirebase(user);
   saveSession(user);
   closeOTP();
-  showToast('✅ Welcome, '+name+'! You are logged in.');
+  showToast('✅ Welcome, '+name+'!');
   if(otpCallback){const cb=otpCallback;otpCallback=null;cb();}
 }
-function otpNext(el,nextId){
-  el.value=el.value.replace(/\D/g,'');
-  if(el.value&&nextId)document.getElementById(nextId).focus();
-}
-function otpBack(e,el,prevId){
-  if(e.key==='Backspace'&&!el.value&&prevId)document.getElementById(prevId).focus();
+function otpNext(el,nextId){el.value=el.value.replace(/\D/g,'');if(el.value&&nextId)document.getElementById(nextId).focus();}
+function otpBack(e,el,prevId){if(e.key==='Backspace'&&!el.value&&prevId)document.getElementById(prevId).focus();}
+
+// ─── FIREBASE SAVE FUNCTIONS ──────────────────────────────
+function saveUserToFirebase(user){
+  const fb=window._firebase;
+  if(!fb||!fb.firebaseReady){console.warn('Firebase not ready');return;}
+  try{
+    const userRef=fb.ref(fb.db,'users/'+user.phone);
+    fb.set(userRef,{name:user.name,phone:user.phone,lastLogin:new Date().toISOString()});
+  }catch(e){console.warn('Firebase user save failed:',e);}
 }
 
-// ─── SAVE USER RECORD ────────────────────────────────────
-function saveUserRecord(user){
-  try{
-    let users=[];
-    const raw=localStorage.getItem(USERS_KEY);
-    if(raw)users=JSON.parse(raw);
-    const existing=users.findIndex(u=>u.phone===user.phone);
-    if(existing>=0){users[existing].name=user.name;users[existing].lastLogin=new Date().toISOString();}
-    else{users.push({...user,firstSeen:new Date().toISOString(),lastLogin:new Date().toISOString()});}
-    localStorage.setItem(USERS_KEY,JSON.stringify(users));
-  }catch(e){}
+function saveEnquiryToFirebase(data){
+  const fb=window._firebase;
+  if(!fb||!fb.firebaseReady){console.warn('Firebase not ready');return Promise.resolve();}
+  return fb.push(fb.ref(fb.db,'enquiries'),{
+    ...data, time:new Date().toISOString(), status:'New'
+  });
 }
 
-// ─── SAVE ENQUIRY ────────────────────────────────────────
-function saveEnquiry(name,phone,message){
-  try{
-    let list=[];
-    const raw=localStorage.getItem(ENQUIRIES_KEY);
-    if(raw)list=JSON.parse(raw);
-    list.unshift({id:Date.now(),name,phone,message,time:new Date().toISOString(),type:'enquiry'});
-    localStorage.setItem(ENQUIRIES_KEY,JSON.stringify(list));
-  }catch(e){}
+function saveOrderToFirebase(data){
+  const fb=window._firebase;
+  if(!fb||!fb.firebaseReady){console.warn('Firebase not ready');return Promise.resolve();}
+  return fb.push(fb.ref(fb.db,'orders'),{
+    ...data, time:new Date().toISOString(), status:'Pending'
+  });
 }
 
-// ─── SAVE ORDER ──────────────────────────────────────────
-function saveOrder(orderData){
-  try{
-    let list=[];
-    const raw=localStorage.getItem(ORDERS_KEY);
-    if(raw)list=JSON.parse(raw);
-    list.unshift({id:Date.now(),...orderData,time:new Date().toISOString(),type:'order',status:'Pending'});
-    localStorage.setItem(ORDERS_KEY,JSON.stringify(list));
-  }catch(e){}
+// ─── EMAILJS NOTIFICATION ────────────────────────────────
+function sendEmailNotification(templateId, params){
+  const cfg=window._emailjsCfg;
+  if(!cfg||!cfg.EMAILJS_SERVICE_ID||!cfg.EMAILJS_PUBLIC_KEY){
+    console.warn('EmailJS keys missing');return;
+  }
+  emailjs.init(cfg.EMAILJS_PUBLIC_KEY);
+  emailjs.send(cfg.EMAILJS_SERVICE_ID, templateId, params)
+    .then(()=>console.log('✅ Email sent'))
+    .catch(e=>console.warn('Email failed:',e));
+}
+
+// ─── WHATSAPP NOTIFICATION ───────────────────────────────
+function sendWhatsAppNotification(message){
+  const num=window._whatsapp||'919074804430';
+  const url='https://wa.me/'+num+'?text='+encodeURIComponent(message);
+  window.open(url,'_blank');
 }
 
 // ─── PRODUCTS ────────────────────────────────────────────
@@ -1069,22 +1118,19 @@ function renderProducts(filter='all'){
 }
 function filterCat(cat,btn){
   document.querySelectorAll('.cat-filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderProducts(cat);
+  btn.classList.add('active');renderProducts(cat);
 }
 
-// ─── CART ────────────────────────────────────────────────
+// ─── CART ─────────────────────────────────────────────────
 function addToCartGated(id){requireLogin(()=>addToCart(id));}
 function addToCart(id){
   const p=products.find(x=>x.id===id);
   const ex=cart.find(x=>x.id===id);
   if(ex)ex.qty++;else cart.push({...p,qty:1});
-  updateCart();
-  showToast('✅ '+p.name+' added to cart!');
+  updateCart();showToast('✅ '+p.name+' added!');
 }
 function changeQty(id,d){
-  const item=cart.find(x=>x.id===id);
-  if(!item)return;
+  const item=cart.find(x=>x.id===id);if(!item)return;
   item.qty+=d;
   if(item.qty<=0)cart=cart.filter(x=>x.id!==id);
   updateCart();
@@ -1095,7 +1141,7 @@ function updateCart(){
   const tot=document.getElementById('cartTotalRow');
   document.getElementById('cartBadge').textContent=cart.reduce((s,x)=>s+x.qty,0);
   if(!cart.length){
-    list.innerHTML='<div class="cart-empty"><div class="icon">🛒</div><p>Add products from the catalogue above to get started!</p></div>';
+    list.innerHTML='<div class="cart-empty"><div class="icon">🛒</div><p>Add products from the catalogue above!</p></div>';
     tot.style.display='none';return;
   }
   list.innerHTML=cart.map(item=>`
@@ -1121,9 +1167,7 @@ function updateCart(){
 function openModal(id){
   const p=products.find(x=>x.id===id);if(!p)return;
   document.getElementById('modalContent').innerHTML=`
-    <div class="modal-emoji-area" style="background:${p.bg}">
-      <span>${p.emoji}</span>
-    </div>
+    <div class="modal-emoji-area" style="background:${p.bg}"><span>${p.emoji}</span></div>
     <div class="modal-content-body">
       <div class="modal-cat">${p.category}</div>
       <div class="modal-name">${p.name}</div>
@@ -1138,39 +1182,96 @@ function closeModal(){document.getElementById('modal').classList.remove('open');
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
 // ─── ORDER SUBMIT ─────────────────────────────────────────
-function submitOrder(){
-  requireLogin(()=>doSubmitOrder());
-}
+function submitOrder(){requireLogin(()=>doSubmitOrder());}
 function doSubmitOrder(){
   const n=document.getElementById('fn').value.trim();
   const ph=document.getElementById('fp').value.trim();
   const a=document.getElementById('fa').value.trim();
-  if(!n||!ph||!a){showToast('⚠️ Please fill Name, Phone & Address');return;}
-  // Save order data
+  if(!n||!ph||!a){showToast('⚠️ Fill Name, Phone & Address');return;}
+
   const cartItems=cart.map(x=>({name:x.name,qty:x.qty,price:x.price,priceNum:x.priceNum}));
   const total=cart.reduce((s,x)=>s+x.priceNum*x.qty,0);
-  saveOrder({
+  const itemsText=cartItems.map(x=>x.name+(x.qty>1?' x'+x.qty:'')).join(', ');
+
+  const orderData={
     name:n, phone:ph, address:a,
     email:document.getElementById('fe').value,
     customerType:document.getElementById('fct').value,
     delivery:document.getElementById('fd').value,
     notes:document.getElementById('fno').value,
-    items:cartItems, totalEstimate:'₹'+total.toLocaleString('en-IN')
+    items:cartItems, totalEstimate:'₹'+total.toLocaleString('en-IN'),
+    type:'order'
+  };
+
+  // 1️⃣ Save to Firebase
+  saveOrderToFirebase(orderData).then(()=>{
+    console.log('✅ Order saved to Firebase');
   });
+
+  // 2️⃣ Send Email via EmailJS
+  const cfg=window._emailjsCfg||{};
+  sendEmailNotification(cfg.EMAILJS_TEMPLATE_ORDER, {
+    customer_name: n,
+    customer_phone: ph,
+    customer_email: orderData.email||'—',
+    customer_type: orderData.customerType,
+    delivery_type: orderData.delivery,
+    address: a,
+    items: itemsText,
+    total: orderData.totalEstimate,
+    notes: orderData.notes||'—',
+    time: new Date().toLocaleString('en-IN')
+  });
+
+  // 3️⃣ WhatsApp notification
+  const waMsg =
+    '🛒 *NEW ORDER — Bansal Pipes*\n\n'+
+    '👤 *Name:* '+n+'\n'+
+    '📞 *Phone:* '+ph+'\n'+
+    '📦 *Items:* '+itemsText+'\n'+
+    '💰 *Total Est.:* '+orderData.totalEstimate+'\n'+
+    '📍 *Address:* '+a+'\n'+
+    '🚚 *Delivery:* '+orderData.delivery+'\n'+
+    '🕐 *Time:* '+new Date().toLocaleString('en-IN');
+  sendWhatsAppNotification(waMsg);
+
   document.getElementById('orderForm').style.display='none';
   document.getElementById('successPanel').classList.add('show');
   cart=[];updateCart();
-  showToast('✅ Order placed! We will call you shortly.');
+  showToast('✅ Order placed! Check your WhatsApp.');
 }
 
 // ─── ENQUIRY SUBMIT ───────────────────────────────────────
-function submitEnquiry(){
-  requireLogin(()=>doSubmitEnquiry());
-}
+function submitEnquiry(){requireLogin(()=>doSubmitEnquiry());}
 function doSubmitEnquiry(){
   const msg=document.getElementById('eq_msg').value.trim();
-  if(!msg){showToast('⚠️ Please enter your message');return;}
-  saveEnquiry(currentUser.name, currentUser.phone, msg);
+  if(!msg){showToast('⚠️ Enter your message');return;}
+
+  const data={name:currentUser.name,phone:currentUser.phone,message:msg,type:'enquiry'};
+
+  // 1️⃣ Save to Firebase
+  saveEnquiryToFirebase(data).then(()=>{
+    console.log('✅ Enquiry saved to Firebase');
+  });
+
+  // 2️⃣ Email notification
+  const cfg=window._emailjsCfg||{};
+  sendEmailNotification(cfg.EMAILJS_TEMPLATE_ENQ, {
+    customer_name: currentUser.name,
+    customer_phone: currentUser.phone,
+    message: msg,
+    time: new Date().toLocaleString('en-IN')
+  });
+
+  // 3️⃣ WhatsApp
+  const waMsg =
+    '💬 *NEW ENQUIRY — Bansal Pipes*\n\n'+
+    '👤 *Name:* '+currentUser.name+'\n'+
+    '📞 *Phone:* '+currentUser.phone+'\n'+
+    '📝 *Message:* '+msg+'\n'+
+    '🕐 *Time:* '+new Date().toLocaleString('en-IN');
+  sendWhatsAppNotification(waMsg);
+
   document.getElementById('eq_msg').value='';
   showToast('✅ Message sent! We will reply shortly.');
 }
@@ -1182,16 +1283,21 @@ function showToast(msg){
   setTimeout(()=>t.classList.remove('show'),3200);
 }
 
-// ─── SYNC FROM ADMIN ──────────────────────────────────────
+// ─── SYNC PRODUCTS FROM ADMIN ─────────────────────────────
 window.addEventListener('storage',function(e){
   if(e.key===STORAGE_KEY){products=getProducts();renderProducts();}
 });
 
 // ─── INIT ─────────────────────────────────────────────────
-loadSession();
-renderProducts();
-updateCart();
+window.bansalInit = function(){
+  loadSession();
+  renderProducts();
+  updateCart();
+};
+// Fallback if module already loaded
+if(document.readyState==='complete'||document.readyState==='interactive'){
+  setTimeout(window.bansalInit,100);
+}
 </script>
-
 </body>
 </html>

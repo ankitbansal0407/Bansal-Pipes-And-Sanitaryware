@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Bansal Pipes & Sanitaryware</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#080a0f;--panel:#0d1117;--card:#111620;--card2:#161c2a;--border:#1e2535;--border2:#252d40;--orange:#ff6b00;--amber:#ffb347;--green:#22c55e;--red:#ef4444;--blue:#3b82f6;--white:#f0f2f5;--muted:#7a8499;--text:#c8d0e0}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--orange)}
+body{font-family:"Barlow",sans-serif;background:var(--bg);color:var(--white);min-height:100vh;display:flex}
+.login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999}
+.login-box{background:var(--card);border:1px solid var(--border);width:380px;overflow:hidden}
+.login-top{background:var(--orange);padding:30px;text-align:center}
+.login-top .icon{font-size:2.8rem;margin-bottom:8px}
+.login-top h2{font-family:"Bebas Neue",sans-serif;font-size:2rem;letter-spacing:3px;color:white}
+.login-top p{font-size:0.78rem;color:rgba(255,255,255,0.8);letter-spacing:1px}
+.login-body{padding:28px}
+.l-lbl{display:block;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:700}
+.l-inp{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--white);padding:12px 14px;font-family:"Barlow",sans-serif;font-size:0.9rem;outline:none;margin-bottom:14px;transition:border-color 0.2s}
+.l-inp:focus{border-color:var(--orange)}
+.l-btn{width:100%;background:var(--orange);color:white;border:none;padding:14px;font-family:"Barlow Condensed",sans-serif;font-size:1.1rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:background 0.2s}
+.l-btn:hover{background:var(--amber)}
+.l-err{color:var(--red);font-size:0.8rem;margin-top:8px;display:none;text-align:center}
+.l-hint{font-size:0.75rem;color:var(--muted);text-align:center;margin-top:12px}
+.sidebar{width:230px;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;position:fixed;left:0;top:0;z-index:100}
+.sb-top{padding:20px 16px;border-bottom:1px solid var(--border)}
+.sb-hex{width:36px;height:36px;background:var(--orange);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:18px;color:white;margin-bottom:10px}
+.sb-name{font-family:"Bebas Neue",sans-serif;font-size:0.95rem;letter-spacing:2px;color:var(--orange)}
+.sb-role{font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.sb-nav{flex:1;padding:12px 0;overflow-y:auto}
+.sb-grp{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);padding:12px 16px 6px;font-weight:700}
+.sb-link{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;border-left:3px solid transparent;color:var(--muted);font-size:0.85rem;font-weight:600;text-decoration:none;transition:all 0.2s;user-select:none}
+.sb-link:hover{background:var(--card);color:var(--white)}
+.sb-link.active{background:rgba(255,107,0,0.1);border-left-color:var(--orange);color:var(--orange)}
+.sb-icon{width:20px;text-align:center}
+.sb-badge{background:var(--orange);color:white;border-radius:2px;padding:1px 7px;font-size:0.65rem;font-weight:700;margin-left:auto}
+.sb-bottom{padding:14px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sb-av{width:34px;height:34px;background:rgba(255,107,0,0.15);border:1px solid rgba(255,107,0,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.sb-uname{font-size:0.85rem;font-weight:700}.sb-urole{font-size:0.68rem;color:var(--muted)}
+.logout-btn{margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.1rem;transition:color 0.2s}
+.logout-btn:hover{color:var(--red)}
+.main{margin-left:230px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--panel);border-bottom:1px solid var(--border);height:60px;padding:0 26px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.tb-title{font-family:"Bebas Neue",sans-serif;font-size:1.3rem;letter-spacing:2px}
+.tb-right{display:flex;align-items:center;gap:10px}
+.saved-tag{font-size:0.72rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.saved-dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;font-family:"Barlow Condensed",sans-serif;font-size:0.85rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;transition:all 0.2s}
+.btn-clip{clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px))}
+.btn-orange{background:var(--orange);color:white}.btn-orange:hover{background:var(--amber)}
+.btn-outline{background:transparent;border:1px solid var(--border2);color:var(--text)}.btn-outline:hover{border-color:var(--orange);color:var(--orange)}
+.btn-red{background:rgba(239,68,68,0.1);color:var(--red);border:1px solid rgba(239,68,68,0.2)}.btn-red:hover{background:rgba(239,68,68,0.2)}
+.btn-green{background:rgba(34,197,94,0.1);color:var(--green);border:1px solid rgba(34,197,94,0.2)}.btn-green:hover{background:rgba(34,197,94,0.2)}
+.btn-blue{background:rgba(59,130,246,0.1);color:var(--blue);border:1px solid rgba(59,130,246,0.2)}.btn-blue:hover{background:rgba(59,130,246,0.2)}
+.btn-sm{padding:5px 12px;font-size:0.75rem}
+.content{padding:22px 26px;flex:1}
+.tab-pane{display:none}.tab-pane.active{display:block}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.stat-box{background:var(--card);border:1px solid var(--border);padding:20px;position:relative;overflow:hidden;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
+.stat-box::after{content:"";position:absolute;top:0;left:0;width:3px;height:100%}
+.stat-box.s-orange::after{background:var(--orange)}.stat-box.s-green::after{background:var(--green)}.stat-box.s-blue::after{background:var(--blue)}.stat-box.s-red::after{background:var(--red)}
+.s-icon{font-size:1.6rem;margin-bottom:8px}.s-val{font-family:"Bebas Neue",sans-serif;font-size:1.9rem;letter-spacing:2px}.s-label{font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.panel{background:var(--card);border:1px solid var(--border);margin-bottom:18px}
+.panel-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.panel-title{font-family:"Barlow Condensed",sans-serif;font-size:0.82rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--orange)}
+.panel-body{padding:18px}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:9px 12px;border-bottom:1px solid var(--border);font-weight:700}
+td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:0.84rem;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,107,0,0.02)}
+.p-thumb{width:36px;height:36px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;border:1px solid var(--border);overflow:hidden;flex-shrink:0}
+.p-thumb img{width:100%;height:100%;object-fit:cover}
+.cat-chip{display:inline-block;padding:2px 9px;font-size:0.66rem;font-family:"Barlow Condensed",sans-serif;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;background:rgba(59,130,246,0.1);color:var(--blue);border:1px solid rgba(59,130,246,0.2)}
+.bc{display:inline-block;padding:2px 9px;font-size:0.66rem;font-family:"Barlow Condensed",sans-serif;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
+.bc-or{background:rgba(255,107,0,0.1);color:var(--orange);border:1px solid rgba(255,107,0,0.2)}
+.bc-gr{background:rgba(34,197,94,0.1);color:var(--green);border:1px solid rgba(34,197,94,0.2)}
+.bc-no{background:var(--card2);color:var(--muted)}
+.price-cell{font-family:"Bebas Neue",sans-serif;font-size:1.1rem;color:var(--orange);letter-spacing:1px}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.search-wrap{flex:1;min-width:180px;display:flex;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--border2);padding:8px 12px}
+.search-wrap input{background:none;border:none;color:var(--white);outline:none;font-family:"Barlow",sans-serif;font-size:0.85rem;width:100%}
+.search-wrap input::placeholder{color:var(--muted)}
+.f-sel{background:var(--card2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;font-family:"Barlow",sans-serif;font-size:0.83rem;outline:none;cursor:pointer}
+.drawer-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:500;backdrop-filter:blur(3px)}
+.drawer-ov.open{display:flex;align-items:center;justify-content:center}
+.drawer{background:var(--card);border:1px solid var(--border);width:580px;max-width:95vw;max-height:94vh;overflow-y:auto;animation:dIn 0.3s ease}
+@keyframes dIn{from{opacity:0;transform:scale(0.95) translateY(10px)}to{opacity:1;transform:none}}
+.drawer-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--card);z-index:1}
+.drawer-title{font-family:"Bebas Neue",sans-serif;font-size:1.3rem;letter-spacing:2px}
+.drawer-close{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);width:28px;height:28px;cursor:pointer;font-size:1rem;transition:all 0.2s}
+.drawer-close:hover{background:var(--orange);color:white;border-color:var(--orange)}
+.drawer-body{padding:22px}
+.d-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.d-grp{margin-bottom:14px}
+.d-lbl{display:block;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:700}
+.d-inp{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--white);padding:11px 13px;font-family:"Barlow",sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.2s}
+.d-inp:focus{border-color:var(--orange)}.d-inp::placeholder{color:var(--muted)}.d-inp option{background:var(--bg)}
+.drawer-foot{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
+.img-upload-area{border:2px dashed var(--border2);padding:20px;text-align:center;cursor:pointer;transition:all 0.3s;position:relative;margin-top:8px}
+.img-upload-area:hover{border-color:var(--orange);background:rgba(255,107,0,0.04)}
+.img-upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.img-preview{width:100%;max-height:140px;object-fit:contain;margin-top:10px;display:none}
+.emoji-grid{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.e-opt{width:34px;height:34px;background:var(--card2);border:2px solid transparent;display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;transition:all 0.15s}
+.e-opt.sel,.e-opt:hover{border-color:var(--orange);background:rgba(255,107,0,0.1)}
+.swatch-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.swatch{width:26px;height:26px;border:2px solid transparent;cursor:pointer;transition:all 0.15s}
+.swatch.sel,.swatch:hover{border-color:var(--orange);transform:scale(1.1)}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--orange);color:var(--white);padding:12px 18px;font-size:0.85rem;font-weight:600;z-index:9999;transform:translateY(80px);opacity:0;transition:all 0.35s;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));max-width:310px}
+.toast.show{transform:translateY(0);opacity:1}.toast.ok{border-left-color:var(--green)}.toast.err{border-left-color:var(--red)}
+.cat-bar{margin-bottom:12px}
+.cat-bar-top{display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:4px}
+.cat-bar-top span:first-child{text-transform:capitalize;font-weight:600}
+.cat-bar-top span:last-child{color:var(--muted)}
+.cat-bar-track{background:var(--card2);height:5px;overflow:hidden}
+.cat-bar-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--amber));transition:width 0.8s ease}
+.act-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.act-item:last-child{border-bottom:none}
+.a-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.a-msg{font-size:0.82rem;line-height:1.5}.a-time{font-size:0.68rem;color:var(--muted);margin-top:2px}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.upload-zone{background:var(--card2);border:2px dashed var(--border2);padding:32px;text-align:center;cursor:pointer;transition:all 0.3s;position:relative}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--orange);background:rgba(255,107,0,0.04)}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:2.2rem;margin-bottom:10px}
+.upload-text{font-family:"Barlow Condensed",sans-serif;font-size:0.95rem;font-weight:700;letter-spacing:1px;margin-bottom:5px}
+.upload-hint{font-size:0.78rem;color:var(--muted)}
+.fmt-tags{display:flex;gap:6px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.fmt{background:rgba(255,107,0,0.1);border:1px solid rgba(255,107,0,0.2);color:var(--orange);padding:3px 10px;font-size:0.68rem;font-weight:700;letter-spacing:1.5px;font-family:"Barlow Condensed",sans-serif}
+.preview-wrap{max-height:260px;overflow-y:auto;border:1px solid var(--border);margin-top:14px}
+/* PUBLISH PAGE SPECIFIC */
+.publish-hero{background:linear-gradient(135deg,rgba(255,107,0,0.15),rgba(255,154,60,0.05));border:1px solid rgba(255,107,0,0.35);padding:30px;margin-bottom:22px;position:relative;overflow:hidden;max-width:720px}
+.publish-hero::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--orange),var(--amber))}
+.publish-title{font-family:"Bebas Neue",sans-serif;font-size:2rem;letter-spacing:3px;color:var(--orange);margin-bottom:8px}
+.publish-sub{color:var(--text);font-size:0.9rem;line-height:1.7}
+.big-dl-btn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;max-width:720px;background:var(--orange);color:white;border:none;padding:22px;font-family:"Bebas Neue",sans-serif;font-size:1.5rem;letter-spacing:4px;cursor:pointer;transition:all 0.3s;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));margin-bottom:22px}
+.big-dl-btn:hover{background:var(--amber);transform:translateY(-2px);box-shadow:0 14px 35px rgba(255,107,0,0.4)}
+.steps-box{max-width:720px;background:var(--card);border:1px solid var(--border);padding:24px;margin-bottom:18px}
+.steps-title{font-family:"Bebas Neue",sans-serif;font-size:1.1rem;letter-spacing:2px;color:var(--orange);margin-bottom:18px}
+.step{display:flex;gap:14px;align-items:flex-start;margin-bottom:16px}
+.step:last-child{margin-bottom:0}
+.step-num{width:28px;height:28px;background:var(--orange);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:800;flex-shrink:0;margin-top:1px}
+.step-text{font-size:0.88rem;color:var(--text);line-height:1.6}
+.step-text strong{color:var(--white)}
+.step-text code{background:var(--bg);color:var(--orange);padding:1px 7px;font-size:0.82rem;border:1px solid var(--border)}
+.tip-box{max-width:720px;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--blue);padding:20px;margin-bottom:18px}
+.tip-title{font-family:"Barlow Condensed",sans-serif;font-weight:800;letter-spacing:1.5px;font-size:0.9rem;color:var(--blue);margin-bottom:10px}
+.tip-box ul{padding-left:18px;color:var(--text);font-size:0.86rem;line-height:1.9}
+.tip-box li strong{color:var(--white)}
+.tip-box li code{background:var(--bg);color:var(--orange);padding:1px 6px;border:1px solid var(--border)}
+.confirm-box-wrap{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
+.confirm-box-wrap.open{display:flex}
+.confirm-box{background:var(--card);border:1px solid var(--border);width:350px;max-width:95vw;padding:28px;text-align:center}
+.confirm-box h3{font-family:"Bebas Neue",sans-serif;font-size:1.4rem;letter-spacing:2px;margin-bottom:10px}
+.confirm-box p{color:var(--text);font-size:0.87rem;line-height:1.6;margin-bottom:22px}
+.confirm-btns{display:flex;gap:10px;justify-content:center}
+@media(max-width:900px){.sidebar{transform:translateX(-100%)}.main{margin-left:0}.stats-row{grid-template-columns:1fr 1fr}.dash-grid{grid-template-columns:1fr}.d-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-top"><div class="icon">🔧</div><h2>ADMIN PANEL</h2><p>BANSAL PIPES & SANITARYWARE</p></div>
+    <div class="login-body">
+      <label class="l-lbl">Username</label><input class="l-inp" id="lu" value="admin">
+      <label class="l-lbl">Password</label><input class="l-inp" id="lp" type="password" placeholder="Enter password">
+      <button class="l-btn" onclick="doLogin()">SIGN IN →</button>
+      <p class="l-err" id="lErr">❌ Wrong credentials. Try again.</p>
+      <p class="l-hint">Default: <strong style="color:var(--orange)">admin</strong> / <strong style="color:var(--orange)">bansal123</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sb-top">
+    <div class="sb-hex">B</div>
+    <div class="sb-name">BANSAL ADMIN</div>
+    <div class="sb-role">Pipes & Sanitaryware</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-grp">Main</div>
+    <div class="sb-link active" onclick="gotoTab('dashboard',this)"><span class="sb-icon">📊</span>Dashboard</div>
+    <div class="sb-link" onclick="gotoTab('products',this)"><span class="sb-icon">📦</span>Products <span class="sb-badge" id="sbCount">0</span></div>
+    <div class="sb-link" onclick="gotoTab('enquiries',this)"><span class="sb-icon">💬</span>Enquiries <span class="sb-badge" id="sbEnqCount" style="background:var(--blue)">0</span></div>
+    <div class="sb-link" onclick="gotoTab('orders',this)"><span class="sb-icon">🛒</span>Orders <span class="sb-badge" id="sbOrdCount" style="background:var(--green)">0</span></div>
+    <div class="sb-link" onclick="gotoTab('users',this)"><span class="sb-icon">👥</span>Users <span class="sb-badge" id="sbUsrCount" style="background:var(--amber)">0</span></div>
+    <div class="sb-link" onclick="gotoTab('upload',this)"><span class="sb-icon">📤</span>Upload Catalogue</div>
+    <div class="sb-link" onclick="gotoTab('publish',this)"><span class="sb-icon">🚀</span>Publish to Website</div>
+    <div class="sb-grp">Settings</div>
+    <div class="sb-link" onclick="gotoTab('contact',this)"><span class="sb-icon">📍</span>Contact Info</div>
+    <div class="sb-grp">Store</div>
+    <a class="sb-link" href="index.html" target="_blank"><span class="sb-icon">🌐</span>View Website ↗</a>
+  </nav>
+  <div class="sb-bottom">
+    <div class="sb-av">👤</div>
+    <div><div class="sb-uname">Admin</div><div class="sb-urole">Super Admin</div></div>
+    <button class="logout-btn" onclick="logout()" title="Logout">⎋</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="tb-title" id="tbTitle">Dashboard</div>
+    <div class="tb-right">
+      <div class="saved-tag"><div class="saved-dot"></div>Auto-saved</div>
+      <button class="btn btn-orange btn-clip" onclick="gotoTab('products');showAdd()">＋ Add Product</button>
+    </div>
+  </div>
+  <div class="content">
+
+    <!-- TAB: DASHBOARD -->
+    <div class="tab-pane active" id="tab-dashboard">
+      <div class="stats-row">
+        <div class="stat-box s-orange"><div class="s-icon">📦</div><div class="s-val" id="ds-tot">0</div><div class="s-label">Total Products</div></div>
+        <div class="stat-box s-green"><div class="s-icon">🛒</div><div class="s-val" id="ds-orders">0</div><div class="s-label">Orders Received</div></div>
+        <div class="stat-box s-blue"><div class="s-icon">💬</div><div class="s-val" id="ds-enq">0</div><div class="s-label">Enquiries</div></div>
+        <div class="stat-box s-red"><div class="s-icon">👥</div><div class="s-val" id="ds-users">0</div><div class="s-label">Registered Users</div></div>
+      </div>
+      <div style="background:rgba(255,107,0,0.08);border:1px solid rgba(255,107,0,0.3);padding:16px 20px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:2px;color:var(--orange)">🚀 READY TO PUBLISH?</div>
+          <div style="font-size:0.82rem;color:var(--text);margin-top:3px">Download products.json and upload to GitHub to update your live website</div>
+        </div>
+        <button class="btn btn-orange btn-clip" onclick="downloadJSON()">⬇ DOWNLOAD products.json</button>
+      </div>
+      <div class="dash-grid">
+        <div class="panel"><div class="panel-head"><div class="panel-title">📊 By Category</div></div><div class="panel-body" id="catChart"></div></div>
+        <div class="panel"><div class="panel-head"><div class="panel-title">📋 Activity Log</div></div><div class="panel-body" id="actLog"></div></div>
+      </div>
+    </div>
+
+    <!-- TAB: PRODUCTS -->
+    <div class="tab-pane" id="tab-products">
+      <div class="toolbar">
+        <div class="search-wrap">🔍<input type="text" id="srch" placeholder="Search products..." oninput="renderTable()"></div>
+        <select class="f-sel" id="fCat" onchange="renderTable()">
+          <option value="">All Categories</option>
+          <option>pipes</option><option>sanitaryware</option><option>taps</option>
+          <option>showers</option><option>tanks</option><option>hardware</option>
+        </select>
+        <button class="btn btn-orange btn-clip" onclick="showAdd()">＋ Add Product</button>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">CATALOGUE <span id="tblCount" style="font-weight:400;color:var(--muted)"></span></div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-outline btn-sm" onclick="downloadJSON()">⬇ Download JSON</button>
+            <button class="btn btn-blue btn-sm" onclick="gotoTab('upload')">📤 Import File</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Image</th><th>Badge</th><th style="text-align:right">Actions</th></tr></thead>
+          <tbody id="prodTable"></tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: UPLOAD -->
+    <div class="tab-pane" id="tab-upload">
+      <div class="panel" style="max-width:680px">
+        <div class="panel-head"><div class="panel-title">📤 Import Catalogue File</div></div>
+        <div class="panel-body">
+          <p style="color:var(--text);font-size:0.88rem;line-height:1.7;margin-bottom:20px">Upload a CSV or JSON file to add products in bulk.</p>
+          <div class="upload-zone" id="uz" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
+            <input type="file" accept=".csv,.json" onchange="handleFile(event)">
+            <div class="upload-icon">📁</div>
+            <div class="upload-text">DRAG & DROP OR CLICK TO BROWSE</div>
+            <div class="upload-hint">Supports CSV and JSON formats</div>
+            <div class="fmt-tags"><span class="fmt">CSV</span><span class="fmt">JSON</span></div>
+          </div>
+          <div id="upPreview" style="display:none;margin-top:20px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <div style="color:var(--green);font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1px">✅ <span id="previewCount">0</span> PRODUCTS READY</div>
+              <div style="display:flex;gap:8px">
+                <button class="btn btn-outline btn-sm" onclick="cancelUpload()">Cancel</button>
+                <button class="btn btn-green btn-sm" onclick="confirmUpload()">✅ Import All</button>
+              </div>
+            </div>
+            <div class="preview-wrap"><table><thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Badge</th></tr></thead><tbody id="previewTable"></tbody></table></div>
+          </div>
+          <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border)">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;letter-spacing:1px;margin-bottom:8px;font-size:0.95rem">📄 CSV FORMAT</div>
+            <div style="background:var(--bg);padding:14px;font-family:monospace;font-size:0.76rem;color:var(--text);overflow-x:auto;border:1px solid var(--border);line-height:1.8">
+              name,category,price,priceNum,badge,desc,image<br>
+              "Finolex Pipe",pipes,"Rs.120/mtr",120,Bestseller,"ISI marked",""<br>
+              "Cera WC",sanitaryware,"Rs.8500",8500,Premium,"Dual flush WC",""
+            </div>
+            <div style="margin-top:10px;display:flex;gap:8px">
+              <button class="btn btn-outline btn-sm" onclick="dlTemplate('csv')">⬇ CSV Template</button>
+              <button class="btn btn-outline btn-sm" onclick="dlTemplate('json')">⬇ JSON Template</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: PUBLISH TO WEBSITE -->
+    <div class="tab-pane" id="tab-publish">
+      <div class="publish-hero">
+        <div class="publish-title">🚀 PUBLISH TO YOUR WEBSITE</div>
+        <div class="publish-sub">Every time you add, edit or delete products in the admin, follow these steps to update your live website on GitHub Pages. It takes less than 2 minutes!</div>
+      </div>
+
+      <button class="big-dl-btn" onclick="downloadJSON()">
+        ⬇ STEP 1 — DOWNLOAD products.json
+      </button>
+
+      <div class="steps-box">
+        <div class="steps-title">📋 COMPLETE STEP-BY-STEP GUIDE</div>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">Click the big orange button above to <strong>download products.json</strong>. This file contains your entire catalogue.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">Open your browser and go to:<br><code>github.com/ankitbansal0407/Bansal-Pipes-And-Sanitaryware</code></div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">Click on the file named <strong>products.json</strong> in the file list.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-text">Click the <strong>pencil icon ✏️</strong> (Edit this file) on the top right of the file content.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-text"><strong>Select All</strong> the old text (Ctrl+A) and <strong>Delete</strong> it. Then <strong>Paste</strong> the contents of your downloaded file. Or use <strong>"Upload file"</strong> to replace it directly.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-text">Scroll down and click the green <strong>"Commit changes"</strong> button. Your website will update in <strong>30–60 seconds!</strong> ✅</div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-title">💡 HOW TO ADD PRODUCT PHOTOS</div>
+        <ul>
+          <li>In your GitHub repo, click <strong>Add file → Upload files</strong></li>
+          <li>Create a folder called <code>images</code> and upload your product photos there (e.g. <code>images/finolex-pipe.jpg</code>)</li>
+          <li>In the admin, when editing a product, set the <strong>Image URL</strong> field to <code>images/finolex-pipe.jpg</code></li>
+          <li>Download & upload products.json — the photo will appear on your website!</li>
+          <li>Best photo size: <strong>600×600px</strong>, JPG or PNG format</li>
+        </ul>
+      </div>
+
+      <div style="max-width:720px;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--green);padding:20px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;letter-spacing:1.5px;font-size:0.9rem;color:var(--green);margin-bottom:8px">✅ YOUR WEBSITE IS LIVE AT</div>
+        <a href="https://ankitbansal0407.github.io/Bansal-Pipes-And-Sanitaryware/" target="_blank" style="color:var(--orange);font-size:0.9rem;word-break:break-all">https://ankitbansal0407.github.io/Bansal-Pipes-And-Sanitaryware/</a>
+      </div>
+    </div>
+
+    <!-- TAB: ENQUIRIES -->
+    <div class="tab-pane" id="tab-enquiries">
+      <div class="toolbar">
+        <div class="search-wrap">🔍<input type="text" id="enqSrch" placeholder="Search by name or phone..." oninput="renderEnquiries()"></div>
+        <button class="btn btn-red btn-sm" onclick="clearEnquiries()">🗑 Clear All</button>
+        <button class="btn btn-outline btn-sm" onclick="exportCSV('enquiries')">⬇ Export CSV</button>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">💬 CUSTOMER ENQUIRIES <span id="enqCount" style="font-weight:400;color:var(--muted)"></span></div>
+        </div>
+        <div class="tbl-wrap">
+          <table><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Message</th><th>Date & Time</th><th>Action</th></tr></thead>
+          <tbody id="enqTable"></tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: ORDERS -->
+    <div class="tab-pane" id="tab-orders">
+      <div class="toolbar">
+        <div class="search-wrap">🔍<input type="text" id="ordSrch" placeholder="Search by name or phone..." oninput="renderOrders()"></div>
+        <select class="f-sel" id="ordStatus" onchange="renderOrders()">
+          <option value="">All Status</option>
+          <option>Pending</option><option>Confirmed</option><option>Delivered</option><option>Cancelled</option>
+        </select>
+        <button class="btn btn-red btn-sm" onclick="clearOrders()">🗑 Clear All</button>
+        <button class="btn btn-outline btn-sm" onclick="exportCSV('orders')">⬇ Export CSV</button>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">🛒 ORDERS RECEIVED <span id="ordCount" style="font-weight:400;color:var(--muted)"></span></div>
+        </div>
+        <div class="tbl-wrap">
+          <table><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Items</th><th>Total Est.</th><th>Delivery</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
+          <tbody id="ordTable"></tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: USERS -->
+    <div class="tab-pane" id="tab-users">
+      <div class="toolbar">
+        <div class="search-wrap">🔍<input type="text" id="usrSrch" placeholder="Search by name or phone..." oninput="renderUsers()"></div>
+        <button class="btn btn-red btn-sm" onclick="clearUsers()">🗑 Clear All</button>
+        <button class="btn btn-outline btn-sm" onclick="exportCSV('users')">⬇ Export CSV</button>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">👥 REGISTERED USERS <span id="usrCount" style="font-weight:400;color:var(--muted)"></span></div>
+        </div>
+        <div class="tbl-wrap">
+          <table><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>First Seen</th><th>Last Login</th></tr></thead>
+          <tbody id="usrTable"></tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: CONTACT INFO -->
+    <div class="tab-pane" id="tab-contact">
+      <div class="panel" style="max-width:580px">
+        <div class="panel-head"><div class="panel-title">📍 Business Contact Info</div></div>
+        <div class="panel-body">
+          <div class="d-row">
+            <div class="d-grp"><label class="d-lbl">Business Name</label><input class="d-inp" id="ci_name" value="Bansal Pipes & Sanitaryware"></div>
+            <div class="d-grp"><label class="d-lbl">Est. Year</label><input class="d-inp" id="ci_est" value="2005"></div>
+          </div>
+          <div class="d-grp"><label class="d-lbl">Address Line 1</label><input class="d-inp" id="ci_a1" value="Arya Samaj Road, Near Massan Baba Mandir"></div>
+          <div class="d-grp"><label class="d-lbl">City, State & PIN</label><input class="d-inp" id="ci_a2" value="Shivpuri (M.P.) - 473551"></div>
+          <div class="d-row">
+            <div class="d-grp"><label class="d-lbl">Primary Phone</label><input class="d-inp" id="ci_p1" value="9074804430"></div>
+            <div class="d-grp"><label class="d-lbl">Secondary Phone</label><input class="d-inp" id="ci_p2" value="9752433386"></div>
+          </div>
+          <div class="d-grp"><label class="d-lbl">Email</label><input class="d-inp" id="ci_em" value="Ankitbansal666@gmail.com"></div>
+          <div class="d-row">
+            <div class="d-grp"><label class="d-lbl">Opening Time</label><input class="d-inp" id="ci_open" value="9:00 AM"></div>
+            <div class="d-grp"><label class="d-lbl">Closing Time</label><input class="d-inp" id="ci_close" value="7:00 PM"></div>
+          </div>
+          <button class="btn btn-orange btn-clip" style="width:100%;justify-content:center;margin-top:8px" onclick="saveContact()">💾 SAVE CONTACT INFO</button>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:10px;text-align:center">After saving, also manually update index.html and commit to GitHub.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PRODUCT DRAWER -->
+<div class="drawer-ov" id="prodDrawer">
+  <div class="drawer">
+    <div class="drawer-head"><div class="drawer-title" id="dTitle">ADD PRODUCT</div><button class="drawer-close" onclick="closeDrawer()">✕</button></div>
+    <div class="drawer-body">
+      <input type="hidden" id="editId">
+      <div class="d-row">
+        <div class="d-grp"><label class="d-lbl">Product Name *</label><input class="d-inp" id="dp_n" placeholder="e.g. Finolex CPVC Pipe"></div>
+        <div class="d-grp"><label class="d-lbl">Category *</label>
+          <select class="d-inp" id="dp_c">
+            <option value="pipes">Pipes & Fittings</option><option value="sanitaryware">Sanitaryware</option>
+            <option value="taps">Taps & Faucets</option><option value="showers">Showers</option>
+            <option value="tanks">Tanks & Storage</option><option value="hardware">Hardware</option>
+          </select>
+        </div>
+      </div>
+      <div class="d-row">
+        <div class="d-grp"><label class="d-lbl">Price Display *</label><input class="d-inp" id="dp_p" placeholder="Rs.120/mtr or Rs.4,500"></div>
+        <div class="d-grp"><label class="d-lbl">Numeric Price (for cart)</label><input class="d-inp" id="dp_pn" type="number" placeholder="120"></div>
+      </div>
+      <div class="d-grp"><label class="d-lbl">Description</label><input class="d-inp" id="dp_d" placeholder="Short product description"></div>
+      <div class="d-grp"><label class="d-lbl">Badge</label>
+        <select class="d-inp" id="dp_b"><option value="">None</option><option>Bestseller</option><option>New</option><option>Premium</option><option>Sale</option></select>
+      </div>
+      <div class="d-grp">
+        <label class="d-lbl">Image URL (path or full link)</label>
+        <input class="d-inp" id="dp_img_url" placeholder="images/product.jpg or https://...">
+        <p style="font-size:0.72rem;color:var(--muted);margin-top:5px">Upload photo to GitHub images/ folder first, then enter path here e.g. images/pipe1.jpg</p>
+        <div class="img-upload-area" id="imgUploadArea">
+          <input type="file" id="dp_img_file" accept="image/*" onchange="handleImgUpload(event)">
+          <div id="imgUploadLabel">📷 Preview image (optional)<br><span style="font-size:0.75rem;color:var(--muted)">For preview only — actual image must be hosted on GitHub</span></div>
+          <img id="imgPreview" class="img-preview">
+        </div>
+      </div>
+      <div class="d-grp">
+        <label class="d-lbl">Emoji Icon (shown if no image)</label>
+        <div class="emoji-grid" id="emojiGrid"></div>
+      </div>
+      <div class="d-grp">
+        <label class="d-lbl">Card Background Color</label>
+        <div class="swatch-row" id="swatchRow"></div>
+        <input class="d-inp" id="dp_bg" placeholder="#1a3a5c" style="margin-top:8px">
+      </div>
+      <div class="d-grp">
+        <label class="d-lbl">Specifications (one per line: Key: Value)</label>
+        <textarea class="d-inp" id="dp_specs" rows="5" placeholder="Brand: Finolex&#10;Material: CPVC&#10;Size: 1/2 to 2 inch&#10;Warranty: 5 Years"></textarea>
+      </div>
+    </div>
+    <div class="drawer-foot">
+      <button class="btn btn-outline" onclick="closeDrawer()">Cancel</button>
+      <button class="btn btn-orange btn-clip" onclick="saveProduct()">💾 SAVE PRODUCT</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM DIALOG -->
+<div class="confirm-box-wrap" id="confirmOv">
+  <div class="confirm-box">
+    <h3 id="cTitle">CONFIRM?</h3>
+    <p id="cMsg">This cannot be undone.</p>
+    <div class="confirm-btns">
+      <button class="btn btn-outline" onclick="document.getElementById('confirmOv').classList.remove('open')">Cancel</button>
+      <button class="btn btn-red" id="cBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+
+<!-- ═══ FIREBASE SDK ═══ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, push, set, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// ╔══════════════════════════════════════════════════╗
+// ║  🔧 SAME FIREBASE CONFIG AS index.html (Step 3) ║
+// ╚══════════════════════════════════════════════════╝
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyAbUlBVApL0sq62WOW7VqGwLbH3OAfA7R0",
+  authDomain:        "bansal-pipes-and-sanitaryware.firebaseapp.com",
+  databaseURL:       "https://bansal-pipes-and-sanitaryware-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:         "bansal-pipes-and-sanitaryware",
+  storageBucket:     "bansal-pipes-and-sanitaryware.firebasestorage.app",
+  messagingSenderId: "573945911105",
+  appId:             "1:573945911105:web:5ee976ece37afbb5e7b3c0"
+};
+
+let db = null;
+try {
+  const app = initializeApp(FIREBASE_CONFIG);
+  db = getDatabase(app);
+
+  // ── LIVE LISTENER: Orders ────────────────────────────
+  onValue(ref(db, 'orders'), (snapshot) => {
+    const data = snapshot.val() || {};
+    window._fbOrders = Object.entries(data).map(([key,val]) => ({_key:key,...val}))
+      .sort((a,b) => new Date(b.time) - new Date(a.time));
+    renderOrders();
+    const el=document.getElementById('sbOrdCount');
+    if(el) el.textContent = window._fbOrders.length;
+    renderDash();
+  });
+
+  // ── LIVE LISTENER: Enquiries ─────────────────────────
+  onValue(ref(db, 'enquiries'), (snapshot) => {
+    const data = snapshot.val() || {};
+    window._fbEnquiries = Object.entries(data).map(([key,val]) => ({_key:key,...val}))
+      .sort((a,b) => new Date(b.time) - new Date(a.time));
+    renderEnquiries();
+    const el=document.getElementById('sbEnqCount');
+    if(el) el.textContent = window._fbEnquiries.length;
+    renderDash();
+  });
+
+  // ── LIVE LISTENER: Users ─────────────────────────────
+  onValue(ref(db, 'users'), (snapshot) => {
+    const data = snapshot.val() || {};
+    window._fbUsers = Object.values(data).sort((a,b) => new Date(b.lastLogin) - new Date(a.lastLogin));
+    renderUsers();
+    const el=document.getElementById('sbUsrCount');
+    if(el) el.textContent = window._fbUsers.length;
+    renderDash();
+  });
+
+  // Update order status in Firebase
+  window.updateOrderStatusFirebase = function(key, status) {
+    update(ref(db, 'orders/' + key), { status });
+  };
+
+  console.log('✅ Admin Firebase live listeners active');
+} catch(e) {
+  console.warn('⚠️ Firebase not configured:', e.message);
+  window._fbOrders = [];
+  window._fbEnquiries = [];
+  window._fbUsers = [];
+}
+</script>
+
+<!-- ═══ MAIN ADMIN SCRIPT ═══ -->
+<script>
+const SK="bansal_products_v1", AK="bansal_activity_v1";
+const DEFAULT=[
+  {id:1,name:"Finolex CPVC Pipe",category:"pipes",emoji:"🔵",bg:"#1a3a5c",price:"Rs.120/mtr",priceNum:120,badge:"Bestseller",desc:"ISI marked, hot and cold water.",image:"",specs:{Brand:"Finolex",Material:"CPVC",Size:"1/2 to 2 inch"}},
+  {id:2,name:"Astral uPVC Pipe",category:"pipes",emoji:"🟠",bg:"#3a2010",price:"Rs.85/mtr",priceNum:85,badge:null,desc:"UV resistant, underground water supply.",image:"",specs:{Brand:"Astral",Material:"uPVC",Size:"1/2 to 6 inch"}},
+  {id:3,name:"SWR Drainage Pipe",category:"pipes",emoji:"⚫",bg:"#1e1e1e",price:"Rs.210/mtr",priceNum:210,badge:null,desc:"Soil, waste and rainwater drainage.",image:"",specs:{Brand:"Supreme",Material:"PVC",Size:"75-160mm"}},
+  {id:4,name:"Cera One Piece WC",category:"sanitaryware",emoji:"🚽",bg:"#0a2a1a",price:"Rs.8500",priceNum:8500,badge:"Premium",desc:"Siphonic action, dual flush 3/6L.",image:"",specs:{Brand:"Cera",Type:"One-Piece",Warranty:"5 Years"}},
+  {id:5,name:"Hindware Wall Hung WC",category:"sanitaryware",emoji:"🪠",bg:"#1e0a2e",price:"Rs.12800",priceNum:12800,badge:"New",desc:"Wall mounted, concealed cistern.",image:"",specs:{Brand:"Hindware",Type:"Wall Hung",Warranty:"5 Years"}},
+  {id:6,name:"Jaguar Single Lever Tap",category:"taps",emoji:"🚰",bg:"#2a2a0a",price:"Rs.2800",priceNum:2800,badge:"Bestseller",desc:"Chrome finish, ceramic disc.",image:"",specs:{Brand:"Jaguar",Finish:"Chrome",Material:"Brass",Warranty:"10 Years"}},
+  {id:7,name:"Rain Shower 8 inch",category:"showers",emoji:"🚿",bg:"#1e0a3a",price:"Rs.3200",priceNum:3200,badge:"New",desc:"Overhead rain shower, SS body.",image:"",specs:{Brand:"Cera",Size:"8 inch",Finish:"Chrome"}},
+  {id:8,name:"Sintex Water Tank 500L",category:"tanks",emoji:"🪤",bg:"#0a2a0a",price:"Rs.4800",priceNum:4800,badge:"Bestseller",desc:"Triple layer, UV stabilized.",image:"",specs:{Brand:"Sintex",Capacity:"500 Litres",Warranty:"10 Years"}},
+  {id:9,name:"Brass Ball Valve",category:"hardware",emoji:"🔴",bg:"#2a0a0a",price:"Rs.180",priceNum:180,badge:null,desc:"Full bore brass ball valve.",image:"",specs:{Material:"Brass",Size:"1/2 to 2 inch",Finish:"Chrome"}}
+];
+let products=[],activity=[],editId=null,selEmoji="🔵",selBg="#1a3a5c",pendingImport=[];
+window._fbOrders=window._fbOrders||[];
+window._fbEnquiries=window._fbEnquiries||[];
+window._fbUsers=window._fbUsers||[];
+
+function load(){
+  try{const s=localStorage.getItem(SK);products=s?JSON.parse(s):[...DEFAULT];}catch{products=[...DEFAULT];}
+  try{const a=localStorage.getItem(AK);activity=a?JSON.parse(a):[];}catch{activity=[];}
+}
+function save(){localStorage.setItem(SK,JSON.stringify(products));}
+function addAct(msg,type="info"){
+  activity.unshift({msg,type,time:new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})});
+  if(activity.length>30)activity.pop();
+  localStorage.setItem(AK,JSON.stringify(activity));
+}
+
+// ─── LOGIN ────────────────────────────────────────────────
+function doLogin(){
+  const u=document.getElementById("lu").value.trim();
+  const p=document.getElementById("lp").value;
+  if(u==="admin"&&p==="bansal123"){
+    document.getElementById("loginScreen").style.display="none";
+    init();
+  } else {
+    document.getElementById("lErr").style.display="block";
+  }
+}
+function logout(){location.reload();}
+document.getElementById("lp").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
+
+// ─── TABS ─────────────────────────────────────────────────
+function gotoTab(name,el){
+  document.querySelectorAll(".tab-pane").forEach(t=>t.classList.remove("active"));
+  document.querySelectorAll(".sb-link").forEach(l=>l.classList.remove("active"));
+  document.getElementById("tab-"+name).classList.add("active");
+  if(el)el.classList.add("active");
+  const titles={dashboard:"Dashboard",products:"Products",enquiries:"Live Enquiries",orders:"Live Orders",users:"Registered Users",upload:"Upload Catalogue",publish:"Publish to Website",contact:"Contact Info"};
+  document.getElementById("tbTitle").textContent=titles[name]||name;
+  if(name==="products")renderTable();
+  if(name==="dashboard")renderDash();
+  if(name==="enquiries")renderEnquiries();
+  if(name==="orders")renderOrders();
+  if(name==="users")renderUsers();
+}
+
+// ─── DASHBOARD ────────────────────────────────────────────
+function renderDash(){
+  document.getElementById("ds-tot").textContent=products.length;
+  const ords=window._fbOrders||[];
+  const enqs=window._fbEnquiries||[];
+  const usrs=window._fbUsers||[];
+  const de=document.getElementById("ds-enq");if(de)de.textContent=enqs.length;
+  const do2=document.getElementById("ds-orders");if(do2)do2.textContent=ords.length;
+  const du=document.getElementById("ds-users");if(du)du.textContent=usrs.length;
+  document.getElementById("sbCount").textContent=products.length;
+  const cm={};products.forEach(p=>cm[p.category]=(cm[p.category]||0)+1);
+  if(products.length){
+    document.getElementById("catChart").innerHTML=Object.entries(cm).map(([k,v])=>`
+      <div class="cat-bar">
+        <div class="cat-bar-top"><span>${k}</span><span>${v} products</span></div>
+        <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${Math.round(v/products.length*100)}%"></div></div>
+      </div>`).join("");
+  }
+  // Recent activity from Firebase
+  const recentItems=[...ords.slice(0,3).map(o=>({icon:'🛒',msg:'Order from '+o.name+' ('+o.phone+')',time:fmtTime(o.time)})),
+    ...enqs.slice(0,3).map(e=>({icon:'💬',msg:'Enquiry from '+e.name+' ('+e.phone+')',time:fmtTime(e.time)}))];
+  recentItems.sort((a,b)=>b.time-a.time);
+  const actEl=document.getElementById("actLog");
+  if(actEl){
+    if(!recentItems.length&&!activity.length){
+      actEl.innerHTML="<p style='color:var(--muted);font-size:0.85rem;text-align:center;padding:20px'>No activity yet</p>";
+    } else {
+      const cols={info:"var(--blue)",success:"var(--green)",warning:"var(--orange)",error:"var(--red)"};
+      const fbItems=recentItems.map(r=>`<div class="act-item"><div class="a-dot" style="background:var(--orange)"></div><div><div class="a-msg">${r.icon} ${r.msg}</div><div class="a-time">${r.time}</div></div></div>`).join('');
+      const localItems=activity.slice(0,5).map(a=>`<div class="act-item"><div class="a-dot" style="background:${cols[a.type]||cols.info}"></div><div><div class="a-msg">${a.msg}</div><div class="a-time">${a.time}</div></div></div>`).join('');
+      actEl.innerHTML=fbItems+localItems;
+    }
+  }
+}
+
+// ─── HELPERS ─────────────────────────────────────────────
+function fmtTime(iso){
+  if(!iso)return'—';
+  try{
+    const d=new Date(iso);
+    return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  }catch{return iso;}
+}
+
+// ─── LIVE ENQUIRIES ───────────────────────────────────────
+function renderEnquiries(){
+  const el=document.getElementById('enqSrch');
+  const srch=el?el.value.toLowerCase():'';
+  let list=(window._fbEnquiries||[]).filter(e=>!srch||(e.name||'').toLowerCase().includes(srch)||(e.phone||'').includes(srch));
+  const cnt=document.getElementById('enqCount');if(cnt)cnt.textContent='('+list.length+')';
+  const tb=document.getElementById('enqTable');if(!tb)return;
+  if(!list.length){
+    tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted)">🔄 Waiting for enquiries… They will appear here live when customers submit from your website.</td></tr>';
+    return;
+  }
+  tb.innerHTML=list.map((e,i)=>`
+    <tr>
+      <td style="color:var(--muted)">${i+1}</td>
+      <td><strong>${e.name||'—'}</strong></td>
+      <td><span style="color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;letter-spacing:1px">${e.phone||'—'}</span></td>
+      <td style="max-width:280px;word-break:break-word;color:var(--text);font-size:0.83rem">${e.message||'—'}</td>
+      <td style="color:var(--muted);font-size:0.76rem;white-space:nowrap">${fmtTime(e.time)}</td>
+      <td><a href="https://wa.me/91${e.phone}?text=${encodeURIComponent('Hi '+e.name+', thanks for contacting Bansal Pipes!')}" target="_blank" class="btn btn-green btn-sm">💬 WhatsApp</a></td>
+    </tr>`).join('');
+}
+function clearEnquiries(){showToast("Delete from Firebase console at console.firebase.google.com","err");}
+
+// ─── LIVE ORDERS ──────────────────────────────────────────
+function renderOrders(){
+  const se=document.getElementById('ordSrch');
+  const st=document.getElementById('ordStatus');
+  const srch=se?se.value.toLowerCase():'';
+  const status=st?st.value:'';
+  let list=(window._fbOrders||[]).filter(o=>{
+    const ms=!srch||(o.name||'').toLowerCase().includes(srch)||(o.phone||'').includes(srch);
+    const ss=!status||o.status===status;
+    return ms&&ss;
+  });
+  const cnt=document.getElementById('ordCount');if(cnt)cnt.textContent='('+list.length+')';
+  const tb=document.getElementById('ordTable');if(!tb)return;
+  if(!list.length){
+    tb.innerHTML='<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--muted)">🔄 Waiting for orders… They will appear here live when customers place orders.</td></tr>';
+    return;
+  }
+  tb.innerHTML=list.map((o,i)=>{
+    const items=(o.items||[]).map(x=>x.name+(x.qty>1?' x'+x.qty:'')).join(', ')||'—';
+    const key=o._key||'';
+    return`<tr>
+      <td style="color:var(--muted);font-size:0.75rem">${i+1}</td>
+      <td><strong>${o.name||'—'}</strong><div style="font-size:0.72rem;color:var(--muted)">${o.customerType||''}</div></td>
+      <td><span style="color:var(--orange);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px">${o.phone||'—'}</span></td>
+      <td style="max-width:160px;font-size:0.76rem;color:var(--text)">${items}</td>
+      <td style="color:var(--orange);font-family:'Bebas Neue',sans-serif;font-size:1.05rem">${o.totalEstimate||'—'}</td>
+      <td style="font-size:0.75rem;color:var(--muted)">${o.delivery||'—'}</td>
+      <td>
+        <select class="f-sel" style="padding:4px 6px;font-size:0.75rem" onchange="updateOrderStatus('${key}',this.value)">
+          ${['Pending','Confirmed','Delivered','Cancelled'].map(s=>`<option${s===o.status?' selected':''}>${s}</option>`).join('')}
+        </select>
+      </td>
+      <td style="color:var(--muted);font-size:0.75rem;white-space:nowrap">${fmtTime(o.time)}</td>
+      <td><a href="https://wa.me/91${o.phone}?text=${encodeURIComponent('Hi '+o.name+', your order at Bansal Pipes is '+o.status+'!')}" target="_blank" class="btn btn-green btn-sm">💬</a></td>
+    </tr>`;
+  }).join('');
+}
+function updateOrderStatus(key,status){
+  if(window.updateOrderStatusFirebase)window.updateOrderStatusFirebase(key,status);
+  showToast('Status → '+status+' (saved to Firebase)','ok');
+}
+function clearOrders(){showToast("Delete from Firebase console at console.firebase.google.com","err");}
+
+// ─── LIVE USERS ───────────────────────────────────────────
+function renderUsers(){
+  const el=document.getElementById('usrSrch');
+  const srch=el?el.value.toLowerCase():'';
+  let list=(window._fbUsers||[]).filter(u=>!srch||(u.name||'').toLowerCase().includes(srch)||(u.phone||'').includes(srch));
+  const cnt=document.getElementById('usrCount');if(cnt)cnt.textContent='('+list.length+')';
+  const tb=document.getElementById('usrTable');if(!tb)return;
+  if(!list.length){
+    tb.innerHTML='<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--muted)">🔄 No users yet. They appear here when customers login on your website.</td></tr>';
+    return;
+  }
+  tb.innerHTML=list.map((u,i)=>`
+    <tr>
+      <td style="color:var(--muted)">${i+1}</td>
+      <td><strong>${u.name||'—'}</strong></td>
+      <td><span style="color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;letter-spacing:1px">${u.phone||'—'}</span></td>
+      <td style="color:var(--muted);font-size:0.78rem">${fmtTime(u.firstSeen||u.loginTime)}</td>
+      <td style="color:var(--muted);font-size:0.78rem">${fmtTime(u.lastLogin)}</td>
+    </tr>`).join('');
+}
+function clearUsers(){showToast("Delete from Firebase console at console.firebase.google.com","err");}
+
+// ─── EXPORT CSV ───────────────────────────────────────────
+function exportCSV(type){
+  let rows=[],headers=[];
+  if(type==='enquiries'){
+    headers=['Name','Phone','Message','Date'];
+    rows=(window._fbEnquiries||[]).map(e=>[e.name,e.phone,'"'+(e.message||'').replace(/"/g,"'")+'"',fmtTime(e.time)]);
+  }else if(type==='orders'){
+    headers=['Name','Phone','Items','Total','Delivery','Status','Address','Type','Date'];
+    rows=(window._fbOrders||[]).map(o=>[o.name,o.phone,'"'+((o.items||[]).map(x=>x.name).join(', '))+'"',o.totalEstimate,o.delivery,o.status,'"'+(o.address||'')+'"',o.customerType,fmtTime(o.time)]);
+  }else if(type==='users'){
+    headers=['Name','Phone','Last Login'];
+    rows=(window._fbUsers||[]).map(u=>[u.name,u.phone,fmtTime(u.lastLogin)]);
+  }
+  const csv=[headers,...rows].map(r=>r.join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='bansal-'+type+'-'+Date.now()+'.csv';a.click();
+  URL.revokeObjectURL(url);
+  showToast('✅ Exported '+type+'.csv','ok');
+}
+
+// ─── PRODUCTS TABLE ───────────────────────────────────────
+function renderTable(){
+  const q=(document.getElementById("srch")||{value:""}).value.toLowerCase();
+  const cat=(document.getElementById("fCat")||{value:""}).value;
+  let list=products.filter(p=>{
+    const ms=!q||p.name.toLowerCase().includes(q)||p.category.toLowerCase().includes(q);
+    const cs=!cat||p.category===cat;
+    return ms&&cs;
+  });
+  document.getElementById("tblCount").textContent="("+list.length+" products)";
+  const tb=document.getElementById("prodTable");
+  if(!list.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--muted)">No products found</td></tr>';return;}
+  tb.innerHTML=list.map(p=>`
+    <tr>
+      <td><div style="display:flex;align-items:center;gap:10px">
+        <div class="p-thumb" style="background:${p.bg}">${p.image?`<img src="${p.image}">`:`<span>${p.emoji}</span>`}</div>
+        <div><div style="font-weight:700;font-size:0.88rem">${p.name}</div><div style="font-size:0.72rem;color:var(--muted)">#${p.id}</div></div>
+      </div></td>
+      <td><span class="cat-chip">${p.category}</span></td>
+      <td class="price-cell">${p.price}</td>
+      <td>${p.image?`<span style="color:var(--green);font-size:0.8rem">✅ Image</span>`:`<span style="color:var(--muted);font-size:0.8rem">Emoji only</span>`}</td>
+      <td>${p.badge?`<span class="bc bc-or">${p.badge}</span>`:`<span class="bc bc-no">—</span>`}</td>
+      <td style="text-align:right"><div style="display:flex;gap:6px;justify-content:flex-end">
+        <button class="btn btn-blue btn-sm" onclick="showEdit(${p.id})">✏ Edit</button>
+        <button class="btn btn-red btn-sm" onclick="confirmDel(${p.id})">🗑</button>
+      </div></td>
+    </tr>`).join("");
+}
+
+// ─── PRODUCT DRAWER ───────────────────────────────────────
+const EMOJIS=["🔵","🟠","⚫","↩️","🚽","🪠","🪣","🚰","🔩","💧","🚿","🪤","⬛","🔴","🔗","📦","🔧","⚙️","🛠️","🏠"];
+const COLORS=["#1a3a5c","#3a2010","#1e1e1e","#0a2a1a","#1e0a2e","#0a1a2e","#2a2a0a","#0a2a1a","#0a1a3a","#1e0a3a","#2a1a0a","#0a2a0a","#1a1a1a","#2a0a0a","#1a0a0a","#2a1a2a"];
+function buildDrawerSelectors(){
+  document.getElementById("emojiGrid").innerHTML=EMOJIS.map(e=>`<div class="e-opt${e===selEmoji?' sel':''}" onclick="pickEmoji('${e}',this)">${e}</div>`).join("");
+  document.getElementById("swatchRow").innerHTML=COLORS.map(c=>`<div class="swatch${c===selBg?' sel':''}" style="background:${c}" onclick="pickBg('${c}',this)"></div>`).join("");
+}
+function pickEmoji(e,el){selEmoji=e;document.querySelectorAll(".e-opt").forEach(x=>x.classList.remove("sel"));el.classList.add("sel");}
+function pickBg(c,el){selBg=c;document.querySelectorAll(".swatch").forEach(x=>x.classList.remove("sel"));el.classList.add("sel");}
+function showAdd(){
+  editId=null;selEmoji="🔵";selBg="#1a3a5c";
+  document.getElementById("dTitle").textContent="ADD PRODUCT";
+  document.getElementById("editId").value="";
+  ["dp_n","dp_p","dp_pn","dp_d","dp_b","dp_img","dp_sp"].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
+  document.getElementById("dp_c").value="pipes";
+  buildDrawerSelectors();
+  document.getElementById("prodDrawer").classList.add("open");
+}
+function showEdit(id){
+  const p=products.find(x=>x.id===id);if(!p)return;
+  editId=id;selEmoji=p.emoji||"🔵";selBg=p.bg||"#1a3a5c";
+  document.getElementById("dTitle").textContent="EDIT PRODUCT";
+  document.getElementById("editId").value=id;
+  document.getElementById("dp_n").value=p.name;
+  document.getElementById("dp_c").value=p.category;
+  document.getElementById("dp_p").value=p.price;
+  document.getElementById("dp_pn").value=p.priceNum;
+  document.getElementById("dp_d").value=p.desc;
+  document.getElementById("dp_b").value=p.badge||"";
+  document.getElementById("dp_img").value=p.image||"";
+  document.getElementById("dp_sp").value=JSON.stringify(p.specs||{});
+  buildDrawerSelectors();
+  document.getElementById("prodDrawer").classList.add("open");
+  gotoTab("products");
+}
+function closeDrawer(){document.getElementById("prodDrawer").classList.remove("open");}
+function saveProduct(){
+  const n=document.getElementById("dp_n").value.trim();
+  const c=document.getElementById("dp_c").value;
+  const p=document.getElementById("dp_p").value.trim();
+  const pn=parseFloat(document.getElementById("dp_pn").value)||0;
+  const d=document.getElementById("dp_d").value.trim();
+  if(!n||!p){showToast("Name and Price required","err");return;}
+  let specs={};try{const sv=document.getElementById("dp_sp").value.trim();if(sv)specs=JSON.parse(sv);}catch{specs={};}
+  if(editId){
+    const idx=products.findIndex(x=>x.id===editId);
+    if(idx>=0){products[idx]={...products[idx],name:n,category:c,price:p,priceNum:pn,desc:d,badge:document.getElementById("dp_b").value||null,image:document.getElementById("dp_img").value||"",emoji:selEmoji,bg:selBg,specs};}
+    addAct("Edited: "+n,"success");
+  } else {
+    const newId=Math.max(0,...products.map(x=>x.id))+1;
+    products.push({id:newId,name:n,category:c,price:p,priceNum:pn,desc:d,badge:document.getElementById("dp_b").value||null,image:document.getElementById("dp_img").value||"",emoji:selEmoji,bg:selBg,specs});
+    addAct("Added: "+n,"success");
+  }
+  save();closeDrawer();renderTable();renderDash();
+  showToast("✅ Product saved!","ok");
+}
+function confirmDel(id){
+  const p=products.find(x=>x.id===id);
+  document.getElementById("cTitle").textContent="DELETE PRODUCT?";
+  document.getElementById("cMsg").textContent=`"${p.name}" will be permanently deleted.`;
+  document.getElementById("cBtn").onclick=()=>{
+    products=products.filter(x=>x.id!==id);save();
+    addAct("Deleted: "+p.name,"warning");showToast("Deleted","err");
+    renderTable();renderDash();
+    document.getElementById("confirmOv").classList.remove("open");
+  };
+  document.getElementById("confirmOv").classList.add("open");
+}
+function downloadJSON(){
+  const data=JSON.stringify(products,null,2);
+  const blob=new Blob([data],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");a.href=url;a.download="products.json";a.click();
+  URL.revokeObjectURL(url);
+  addAct("Downloaded products.json","info");
+  showToast("✅ products.json downloaded!","ok");
+}
+function dlTemplate(type){
+  if(type==="csv"){
+    const c='name,category,price,priceNum,badge,desc,image\n"Finolex CPVC Pipe",pipes,"Rs.120/mtr",120,Bestseller,"ISI marked",""';
+    const blob=new Blob([c],{type:"text/csv"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="bansal-template.csv";a.click();
+  }else{
+    const d=JSON.stringify([{name:"Product Name",category:"pipes",price:"Rs.120/mtr",priceNum:120,badge:"Bestseller",desc:"Description here",image:"images/photo.jpg",emoji:"🔵",bg:"#1a3a5c",specs:{Brand:"BrandName",Material:"CPVC"}}],null,2);
+    const blob=new Blob([d],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="bansal-template.json";a.click();
+  }
+}
+function handleDrop(e){e.preventDefault();document.getElementById("uz").classList.remove("drag");const file=e.dataTransfer.files[0];if(file)processFile(file);}
+function handleFile(e){const file=e.target.files[0];if(file)processFile(file);}
+function processFile(file){
+  const ext=file.name.split(".").pop().toLowerCase();
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      let parsed=[];
+      if(ext==="json"){const d=JSON.parse(e.target.result);parsed=Array.isArray(d)?d:(d.products||[]);}
+      else if(ext==="csv"){parsed=parseCSV(e.target.result);}
+      if(!parsed.length){showToast("No valid products found","err");return;}
+      let maxId=Math.max(0,...products.map(x=>x.id));
+      pendingImport=parsed.map((p,i)=>({
+        id:maxId+i+1,name:p.name||p.Name||"",
+        category:(p.category||p.Category||"hardware").toLowerCase(),
+        price:p.price||p.Price||"Rs.0",priceNum:parseFloat(p.priceNum||0)||0,
+        badge:p.badge||null,emoji:p.emoji||"📦",bg:p.bg||"#1a1a1a",
+        desc:p.desc||p.description||"",image:p.image||"",specs:{}
+      })).filter(p=>p.name);
+      document.getElementById("previewCount").textContent=pendingImport.length;
+      document.getElementById("previewTable").innerHTML=pendingImport.map(p=>`<tr><td>${p.emoji} ${p.name}</td><td><span class="cat-chip">${p.category}</span></td><td style="color:var(--orange)">${p.price}</td><td>${p.badge||"—"}</td></tr>`).join("");
+      document.getElementById("upPreview").style.display="block";
+    }catch(err){showToast("Could not parse: "+err.message,"err");}
+  };
+  reader.readAsText(file);
+}
+function parseCSV(text){
+  const lines=text.trim().split("\n");if(lines.length<2)return[];
+  const headers=lines[0].split(",").map(h=>h.replace(/"/g,"").trim());
+  return lines.slice(1).map(line=>{
+    const vals=[];let cur="",inQ=false;
+    for(const c of line){if(c==='"')inQ=!inQ;else if(c===","&&!inQ){vals.push(cur);cur="";}else cur+=c;}
+    vals.push(cur);
+    const obj={};headers.forEach((h,i)=>obj[h]=(vals[i]||"").replace(/"/g,"").trim());return obj;
+  });
+}
+function cancelUpload(){document.getElementById("upPreview").style.display="none";pendingImport=[];}
+function confirmUpload(){
+  if(!pendingImport.length)return;
+  if(confirm(`Import ${pendingImport.length} products and MERGE?`)){products=[...products,...pendingImport];}
+  else{products=[...pendingImport];}
+  save();addAct("Imported "+pendingImport.length+" products","success");
+  showToast(pendingImport.length+" products imported!","ok");
+  cancelUpload();renderDash();
+}
+function saveContact(){
+  const info={name:document.getElementById("ci_name").value,addr1:document.getElementById("ci_a1").value,addr2:document.getElementById("ci_a2").value,phone1:document.getElementById("ci_p1").value,phone2:document.getElementById("ci_p2").value,email:document.getElementById("ci_em").value,open:document.getElementById("ci_open").value,close:document.getElementById("ci_close").value};
+  localStorage.setItem("bansal_contact",JSON.stringify(info));
+  addAct("Updated contact info","success");showToast("Contact info saved!","ok");
+}
+function showToast(msg,type="info"){
+  const t=document.getElementById("toast");t.textContent=msg;
+  t.className="toast "+type;t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),3500);
+}
+document.getElementById("prodDrawer").addEventListener("click",function(e){if(e.target===this)closeDrawer();});
+document.getElementById("confirmOv").addEventListener("click",function(e){if(e.target===this)this.classList.remove("open");});
+
+function init(){
+  load();renderDash();
+  document.getElementById("sbCount").textContent=products.length;
+}
+</script>
+</body>
+</html>
