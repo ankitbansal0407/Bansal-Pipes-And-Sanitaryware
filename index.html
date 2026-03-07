@@ -420,17 +420,54 @@ select.f-input option { background: var(--dark); }
 .enquiry-form input, .enquiry-form textarea, .enquiry-form select {
   width: 100%; background: var(--card); border: 1px solid var(--border);
   color: var(--white); padding: 13px 16px; font-family: 'Barlow', sans-serif;
-  font-size: 0.9rem; outline: none; margin-bottom: 12px; transition: border-color 0.2s;
+  font-size: 0.9rem; outline: none; transition: border-color 0.2s;
 }
-.enquiry-form input:focus, .enquiry-form textarea:focus { border-color: var(--orange); }
+.enquiry-form select option { background: var(--dark); }
+.enquiry-form input:focus, .enquiry-form textarea:focus, .enquiry-form select:focus { border-color: var(--orange); }
 .enquiry-form input::placeholder, .enquiry-form textarea::placeholder { color: var(--muted); }
 .enquiry-submit {
-  width: 100%; background: transparent; border: 2px solid var(--orange);
-  color: var(--orange); padding: 16px;
+  width: 100%; background: var(--orange); border: none;
+  color: white; padding: 16px;
   font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
   cursor: pointer; transition: all 0.3s;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
 }
-.enquiry-submit:hover { background: var(--orange); color: white; }
+.enquiry-submit:hover { background: var(--amber); transform: translateY(-2px); }
+/* Login hint banner */
+.enq-login-hint {
+  display: none; align-items: center; gap: 10px;
+  background: rgba(255,107,0,0.08); border: 1px solid rgba(255,107,0,0.25);
+  border-left: 3px solid var(--orange);
+  padding: 12px 16px; font-size: 0.82rem; color: var(--text);
+  margin-bottom: 14px;
+}
+.enq-login-hint.show { display: flex; }
+/* Enquiry success panel */
+.enq-success {
+  display: none; text-align: center; padding: 30px 20px;
+  background: var(--card); border: 1px solid rgba(255,107,0,0.3);
+  border-top: 4px solid var(--orange);
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  animation: fadeUp 0.4s ease;
+}
+.enq-success.show { display: block; }
+.enq-success-icon {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--orange), var(--amber));
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px; font-size: 1.8rem; color: white; font-weight: 900;
+  box-shadow: 0 6px 20px rgba(255,107,0,0.35);
+}
+.enq-success-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--orange); letter-spacing: 3px; margin-bottom: 8px; }
+.enq-success-sub { color: var(--text); font-size: 0.88rem; line-height: 1.65; margin-bottom: 14px; }
+.enq-success-detail {
+  background: var(--black); border: 1px solid var(--border);
+  padding: 12px 16px; text-align: left; font-size: 0.82rem;
+}
+.enq-detail-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.enq-detail-row:last-child { border-bottom: none; }
+.enq-detail-row span:first-child { color: var(--muted); }
+.enq-detail-row span:last-child { color: var(--white); font-weight: 600; max-width: 65%; text-align: right; }
 
 /* ─── FOOTER ─── */
 footer {
@@ -823,11 +860,49 @@ footer {
     <div>
       <div class="section-eyebrow">Quick Enquiry</div>
       <h2 class="section-heading" style="font-size:clamp(2.4rem,4vw,3.5rem);margin-bottom:24px">SEND A<br><span style="color:var(--orange)">MESSAGE</span></h2>
-      <div class="enquiry-form">
-        <input type="text" id="eq_name" placeholder="Your Name" readonly style="opacity:0.6">
-        <input type="tel" id="eq_phone" placeholder="Phone Number" readonly style="opacity:0.6">
-        <textarea id="eq_msg" rows="5" placeholder="Your enquiry or message..."></textarea>
+
+      <!-- Enquiry Form -->
+      <div class="enquiry-form" id="enquiryForm">
+        <div class="enq-login-hint" id="enqLoginHint">
+          <span>🔒</span> <span>Login with your mobile to send a message — <strong onclick="requireLogin(()=>{})" style="color:var(--orange);cursor:pointer;text-decoration:underline">Login / Register</strong></span>
+        </div>
+        <div class="f-group" style="margin-bottom:12px">
+          <label class="f-label">Your Name *</label>
+          <input type="text" class="f-input" id="eq_name" placeholder="Your full name">
+        </div>
+        <div class="f-group" style="margin-bottom:12px">
+          <label class="f-label">Phone Number *</label>
+          <input type="tel" class="f-input" id="eq_phone" placeholder="10-digit mobile number">
+        </div>
+        <div class="f-group" style="margin-bottom:12px">
+          <label class="f-label">Subject</label>
+          <select class="f-input" id="eq_subject">
+            <option value="">Select a subject...</option>
+            <option>Product Enquiry</option>
+            <option>Price Quote Request</option>
+            <option>Bulk / Wholesale Order</option>
+            <option>Delivery Information</option>
+            <option>After Sales Support</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="f-group" style="margin-bottom:16px">
+          <label class="f-label">Your Message *</label>
+          <textarea class="f-input" id="eq_msg" rows="5" placeholder="Type your enquiry, question or requirement here..."></textarea>
+        </div>
         <button class="enquiry-submit" onclick="submitEnquiry()">SEND MESSAGE &rarr;</button>
+      </div>
+
+      <!-- Enquiry Success State -->
+      <div class="enq-success" id="enqSuccess">
+        <div class="enq-success-icon">✓</div>
+        <div class="enq-success-title">MESSAGE SENT!</div>
+        <p class="enq-success-sub">Thanks! We've received your message and will reply within a few hours.</p>
+        <div class="enq-success-detail" id="enqSuccessDetail"></div>
+        <div style="display:flex;gap:10px;margin-top:16px">
+          <a href="https://wa.me/919074804430" target="_blank" class="success-wa-btn" style="flex:1;font-size:0.82rem">💬 Chat on WhatsApp</a>
+          <button class="success-new-btn" style="flex:1" onclick="resetEnquiry()">Send Another Message</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1039,20 +1114,29 @@ function logoutUser(){
   showToast('👋 Logged out');
 }
 function updateUserBar(){
-  const bar=document.getElementById('userBar');
-  const num=document.getElementById('userBarNum');
+  const bar = document.getElementById('userBar');
+  const num = document.getElementById('userBarNum');
+  const hint = document.getElementById('enqLoginHint');
+
   if(currentUser){
     bar.classList.add('show');
-    num.textContent=currentUser.name+' · '+currentUser.phone;
-    const eq_n=document.getElementById('eq_name');
-    const eq_p=document.getElementById('eq_phone');
-    if(eq_n){eq_n.value=currentUser.name;eq_n.style.opacity='1';}
-    if(eq_p){eq_p.value=currentUser.phone;eq_p.style.opacity='1';}
-    const fn=document.getElementById('fn');const fp=document.getElementById('fp');
-    if(fn&&!fn.value)fn.value=currentUser.name;
-    if(fp&&!fp.value)fp.value=currentUser.phone;
+    num.textContent = currentUser.name + ' · ' + currentUser.phone;
+    // Pre-fill enquiry form if fields are empty
+    const eq_n = document.getElementById('eq_name');
+    const eq_p = document.getElementById('eq_phone');
+    if(eq_n && !eq_n.value){ eq_n.value = currentUser.name; }
+    if(eq_p && !eq_p.value){ eq_p.value = currentUser.phone; }
+    // Hide login hint
+    if(hint) hint.classList.remove('show');
+    // Pre-fill order form
+    const fn = document.getElementById('fn');
+    const fp = document.getElementById('fp');
+    if(fn && !fn.value) fn.value = currentUser.name;
+    if(fp && !fp.value) fp.value = currentUser.phone;
   } else {
     bar.classList.remove('show');
+    // Show soft login hint on enquiry form (but don't block it)
+    if(hint) hint.classList.add('show');
   }
 }
 
@@ -1136,16 +1220,39 @@ function saveOrderToFirebase(data){
   });
 }
 
-// ─── EMAILJS NOTIFICATION ────────────────────────────────
+// ─── EMAILJS CONFIG (directly here, no async dependency) ──
+const _EJS = {
+  serviceId:       "service_fti0prv",
+  templateOrder:   "template_vf41nop",
+  templateEnquiry: "template_vf41nop",
+  publicKey:       "_SayTySP-oqF3A_wb",
+  toEmail:         "ankitbansal0407@gmail.com"
+};
+
+// ─── EMAILJS NOTIFICATION ─────────────────────────────────
 function sendEmailNotification(templateId, params){
-  const cfg=window._emailjsCfg;
-  if(!cfg||!cfg.EMAILJS_SERVICE_ID||!cfg.EMAILJS_PUBLIC_KEY){
-    console.warn('EmailJS keys missing');return;
+  // Always include the destination email
+  const fullParams = { ...params, to_email: _EJS.toEmail };
+
+  function _send(){
+    if(typeof emailjs === 'undefined'){
+      console.warn('⏳ EmailJS not loaded yet, retrying in 1s...');
+      setTimeout(_send, 1000);
+      return;
+    }
+    emailjs.init(_EJS.publicKey);
+    console.log('📧 Sending email to', _EJS.toEmail, '| template:', templateId);
+    emailjs.send(_EJS.serviceId, templateId, fullParams)
+      .then(res => {
+        console.log('✅ Email sent successfully! Status:', res.status, res.text);
+        showToast('📧 Email confirmation sent!');
+      })
+      .catch(err => {
+        console.error('❌ EmailJS error:', JSON.stringify(err));
+        showToast('⚠️ Email could not be sent: '+( err.text||err.message||'unknown error'));
+      });
   }
-  emailjs.init(cfg.EMAILJS_PUBLIC_KEY);
-  emailjs.send(cfg.EMAILJS_SERVICE_ID, templateId, params)
-    .then(()=>console.log('✅ Email sent'))
-    .catch(e=>console.warn('Email failed:',e));
+  _send();
 }
 
 // ─── WHATSAPP NOTIFICATION ───────────────────────────────
@@ -1275,8 +1382,7 @@ function doSubmitOrder(){
   saveOrderToFirebase(orderData).then(()=>console.log('✅ Saved to Firebase'));
 
   // 2️⃣ Email to SHOP OWNER via EmailJS
-  const cfg = window._emailjsCfg||{};
-  sendEmailNotification(cfg.EMAILJS_TEMPLATE_ORDER, {
+  sendEmailNotification(_EJS.templateOrder, {
     to_name:          'Bansal Pipes Team',
     order_id:         orderId,
     customer_name:    n,
@@ -1337,28 +1443,66 @@ function startNewOrder(){
 }
 
 // ─── ENQUIRY SUBMIT ───────────────────────────────────────
-function submitEnquiry(){requireLogin(()=>doSubmitEnquiry());}
-function doSubmitEnquiry(){
-  const msg=document.getElementById('eq_msg').value.trim();
-  if(!msg){showToast('⚠️ Enter your message');return;}
+function submitEnquiry(){
+  const name    = document.getElementById('eq_name').value.trim();
+  const phone   = document.getElementById('eq_phone').value.trim();
+  const subject = document.getElementById('eq_subject').value;
+  const msg     = document.getElementById('eq_msg').value.trim();
 
-  const data={name:currentUser.name,phone:currentUser.phone,message:msg,type:'enquiry'};
+  if(!name){ showToast('⚠️ Please enter your name'); document.getElementById('eq_name').focus(); return; }
+  if(!phone||phone.replace(/\D/g,'').length<10){ showToast('⚠️ Enter a valid 10-digit phone'); document.getElementById('eq_phone').focus(); return; }
+  if(!msg){ showToast('⚠️ Please write your message'); document.getElementById('eq_msg').focus(); return; }
+
+  const timeStr = new Date().toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'});
+  const enqId   = 'ENQ-'+Date.now().toString().slice(-6);
+  const cleanPhone = phone.replace(/\D/g,'');
+
+  const data = {
+    enqId, name, phone: cleanPhone,
+    subject: subject||'General Enquiry',
+    message: msg, type: 'enquiry'
+  };
 
   // 1️⃣ Save to Firebase
-  saveEnquiryToFirebase(data).then(()=>console.log('✅ Enquiry saved'));
+  saveEnquiryToFirebase(data).then(()=>console.log('✅ Enquiry saved to Firebase'));
 
-  // 2️⃣ Email notification to shop owner
-  const cfg=window._emailjsCfg||{};
+  // 2️⃣ Save user record
+  saveUserToFirebase({name, phone: cleanPhone, loginTime: new Date().toISOString()});
+
+  // 3️⃣ Email to shop owner
+  const cfg = window._emailjsCfg||{};
   sendEmailNotification(cfg.EMAILJS_TEMPLATE_ENQ, {
     to_name:        'Bansal Pipes Team',
-    customer_name:  currentUser.name,
-    customer_phone: currentUser.phone,
+    enq_id:         enqId,
+    customer_name:  name,
+    customer_phone: cleanPhone,
+    subject:        subject||'General Enquiry',
     message:        msg,
-    time:           new Date().toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})
+    time:           timeStr
   });
 
-  document.getElementById('eq_msg').value='';
-  showToast('✅ Message sent! We will reply shortly.');
+  // 4️⃣ Show success panel
+  document.getElementById('enqSuccessDetail').innerHTML =
+    '<div class="enq-detail-row"><span>Enquiry ID</span><span style="color:var(--orange);font-family:\'Barlow Condensed\',sans-serif;letter-spacing:1px">'+enqId+'</span></div>'+
+    '<div class="enq-detail-row"><span>Name</span><span>'+name+'</span></div>'+
+    '<div class="enq-detail-row"><span>Phone</span><span>'+cleanPhone+'</span></div>'+
+    '<div class="enq-detail-row"><span>Subject</span><span>'+(subject||'General Enquiry')+'</span></div>'+
+    '<div class="enq-detail-row"><span>Message</span><span>'+msg.slice(0,80)+(msg.length>80?'…':'')+'</span></div>';
+
+  document.getElementById('enquiryForm').style.display = 'none';
+  document.getElementById('enqSuccess').classList.add('show');
+  document.getElementById('enqSuccess').scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function resetEnquiry(){
+  document.getElementById('enqSuccess').classList.remove('show');
+  document.getElementById('enquiryForm').style.display = 'block';
+  document.getElementById('eq_msg').value = '';
+  document.getElementById('eq_subject').value = '';
+  if(!currentUser){
+    document.getElementById('eq_name').value = '';
+    document.getElementById('eq_phone').value = '';
+  }
 }
 
 // ─── TOAST ────────────────────────────────────────────────

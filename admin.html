@@ -370,7 +370,7 @@ tr:hover td{background:rgba(255,107,0,0.02)}
           <div class="panel-title">💬 CUSTOMER ENQUIRIES <span id="enqCount" style="font-weight:400;color:var(--muted)"></span></div>
         </div>
         <div class="tbl-wrap">
-          <table><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Message</th><th>Date & Time</th><th>Action</th></tr></thead>
+          <table><thead><tr><th>#</th><th>Enquiry ID</th><th>Name</th><th>Phone</th><th>Subject</th><th>Message</th><th>Date & Time</th><th>Action</th></tr></thead>
           <tbody id="enqTable"></tbody></table>
         </div>
       </div>
@@ -691,24 +691,33 @@ function fmtTime(iso){
 function renderEnquiries(){
   const el=document.getElementById('enqSrch');
   const srch=el?el.value.toLowerCase():'';
-  let list=(window._fbEnquiries||[]).filter(e=>!srch||(e.name||'').toLowerCase().includes(srch)||(e.phone||'').includes(srch));
+  let list=(window._fbEnquiries||[]).filter(e=>
+    !srch||(e.name||'').toLowerCase().includes(srch)||
+    (e.phone||'').includes(srch)||
+    (e.subject||'').toLowerCase().includes(srch)||
+    (e.message||'').toLowerCase().includes(srch)
+  );
   const cnt=document.getElementById('enqCount');if(cnt)cnt.textContent='('+list.length+')';
   const tb=document.getElementById('enqTable');if(!tb)return;
   if(!list.length){
-    tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted)">🔄 Waiting for enquiries… They will appear here live when customers submit from your website.</td></tr>';
+    tb.innerHTML='<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted)">🔄 No enquiries yet. They will appear here live when customers send a message from your website.</td></tr>';
     return;
   }
   tb.innerHTML=list.map((e,i)=>`
     <tr>
-      <td style="color:var(--muted)">${i+1}</td>
+      <td style="color:var(--muted);font-size:0.75rem">${i+1}</td>
+      <td><span style="color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;letter-spacing:1px">${e.enqId||'—'}</span></td>
       <td><strong>${e.name||'—'}</strong></td>
-      <td><span style="color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;letter-spacing:1px">${e.phone||'—'}</span></td>
-      <td style="max-width:280px;word-break:break-word;color:var(--text);font-size:0.83rem">${e.message||'—'}</td>
-      <td style="color:var(--muted);font-size:0.76rem;white-space:nowrap">${fmtTime(e.time)}</td>
-      <td><a href="https://wa.me/91${e.phone}?text=${encodeURIComponent('Hi '+e.name+', thanks for contacting Bansal Pipes!')}" target="_blank" class="btn btn-green btn-sm">💬 WhatsApp</a></td>
+      <td><span style="color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;letter-spacing:1px">${e.phone||'—'}</span></td>
+      <td><span class="bc bc-or" style="font-size:0.68rem">${e.subject||'General'}</span></td>
+      <td style="max-width:260px;word-break:break-word;color:var(--text);font-size:0.82rem">${e.message||'—'}</td>
+      <td style="color:var(--muted);font-size:0.75rem;white-space:nowrap">${fmtTime(e.time)}</td>
+      <td>
+        <a href="https://wa.me/91${e.phone}?text=${encodeURIComponent('Hi '+e.name+', thanks for enquiring at Bansal Pipes! How can we help you?')}" target="_blank" class="btn btn-green btn-sm">💬 Reply</a>
+      </td>
     </tr>`).join('');
 }
-function clearEnquiries(){showToast("Delete from Firebase console at console.firebase.google.com","err");}
+function clearEnquiries(){showToast("To delete records, go to Firebase Console → Realtime Database","err");}
 
 // ─── LIVE ORDERS ──────────────────────────────────────────
 function renderOrders(){
